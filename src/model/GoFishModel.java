@@ -1,12 +1,9 @@
 package model;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import util.GoFishPlayer;
-import util.Server;
 import util.Card;
 import util.Deck;
 
@@ -17,8 +14,6 @@ public class GoFishModel extends Observable{
 	 * keep track of which players turn it is, start at 0.
 	 */
 	private int whosTurn;
-	
-	
 	/**
 	 * keep track of if the game is over or not, start as false
 	 */
@@ -31,8 +26,6 @@ public class GoFishModel extends Observable{
 	 * how many players are present
 	 */
 	private int numberOfPlayers;
-	
-	private Server server;
 	/**
 	 * deck of cards being used for the game
 	 */
@@ -46,42 +39,6 @@ public class GoFishModel extends Observable{
 		this.gameOver = false;
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
-		this.deck = new Deck();
-		//this.server = createServer();
-	}
-	
-	public GoFishPlayer[] getPlayers () {
-		return this.players;
-	}
-	
-	private Server createServer() {
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(4000);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        server = new Server(serverSocket);
-        server.createServer();
-        return server;
-	}
-
-	public void startGame() {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (this.players[i] == null) {
-					this.players[i] = new GoFishPlayer(i);
-				}
-				this.players[i].addCard(deck.draw());
-			}
-		}
-		updateView();
-	}
-	
-	public void updateView() {
-		setChanged();
-		notifyObservers();
 	}
 	
 	/**
@@ -89,11 +46,7 @@ public class GoFishModel extends Observable{
 	 */
 	public void changeTurn() {
 		//if we are at the last player, change to first player
-		if (this.whosTurn == numberOfPlayers - 1) {
-			this.whosTurn = 0;
-		} else {
-			this.whosTurn += 1;
-		}
+		this.whosTurn = (this.whosTurn + 1) % this.numberOfPlayers;
 	}
 	
 	/**
@@ -104,20 +57,7 @@ public class GoFishModel extends Observable{
 		return this.whosTurn;
 	}
 	
-	/**
-	 * method to make the current player "go fish" from the deck.
-	 * 
-	 * this occurs if a player asks for a card and the player being asked
-	 * does not have any of that cards rank.
-	 * 
-	 * player pulls a random card from the deck and brings it to their hand
-	 */
-	public void playerGoFish() {
-		//draw random card from the shuffled deck
-		Card fishedCard = deck.draw();
-		//add to players hand
-		players[whosTurn].addCard(fishedCard);
-	}
+
 	
 	/**
 	 * method that controls a player asking for a card from another player
@@ -142,6 +82,7 @@ public class GoFishModel extends Observable{
 		} else {
 			//cards not taken, need to make the current player go fish.
 			return false;
+
 		}
 	}
 	
@@ -167,38 +108,18 @@ public class GoFishModel extends Observable{
 	public void loadGame() {
 		return;
 	}
-	
-	public String handToString(ArrayList<Card> toStr) {
-		String retval = "Deck: ";
-		for (Card card:toStr) {
-			retval += card.getRank() +" ";
-		}
-		return retval;
+
+	/**
+	 *
+	 * @return players array
+	 */
+	public GoFishPlayer[] getPlayers() {
+		return players;
 	}
 
-	public String getOurCurrentHand() {
-		// TODO Auto-generated method stub
-		return handToString(this.players[this.whosTurn].getHand());
+	public Deck getDeck() {
+		return deck;
 	}
 
-	public String getPlayerDeckCount(int i) {
-		if (i == 2) {
-			int size = this.players[this.whosTurn+1].getHand().size();
-			return "Deck: " +size+ " cards";
-		}
-		if (i == 3) {
-			int size = this.players[this.whosTurn+2].getHand().size();
-			return "Deck: " +size+ " cards";
-		}
-		if (i == 4) {
-			int size = this.players[this.whosTurn+3].getHand().size();
-			return "Deck: " +size+ " cards";
-		}
-		return "";
-	}
-
-	public String getCardsLeft() {
-		return "Cards Left: " + Integer.toString(this.deck.size());
-	}
 }
 

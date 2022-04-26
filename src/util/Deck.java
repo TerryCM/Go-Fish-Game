@@ -13,7 +13,7 @@ public class Deck {
     public Deck() {
         cards = new ArrayList<Card>();
         String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
         // create 52 cards
         for (String suit : suits) {
             for (String rank : ranks) {
@@ -35,9 +35,6 @@ public class Deck {
      * @return a random card from the deck
      */
     public Card draw() {
-    	if (cards.size() == 0) {
-    		return null;
-    	}
         int index = (int) (Math.random() * cards.size());
         return cards.remove(index);
     }

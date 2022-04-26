@@ -8,12 +8,10 @@ public class GoFishPlayer {
      */
     private int playerNumber;
     private ArrayList<Card> hand;
-    private ArrayList<Card> stack;
 
     public GoFishPlayer(int playerNumber) {
         this.playerNumber = playerNumber;
-        this.hand = new ArrayList<Card>();
-        this.stack = new ArrayList<Card>();
+        hand = new ArrayList<Card>();
     }
 
     /**
@@ -22,10 +20,6 @@ public class GoFishPlayer {
 
     public int getPlayerNumber() {
         return playerNumber;
-    }
-    
-    public ArrayList<Card> getHand() {
-    	return this.hand;
     }
 
     /**

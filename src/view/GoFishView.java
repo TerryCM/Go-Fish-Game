@@ -11,6 +11,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -23,13 +27,24 @@ public class GoFishView extends Application implements Observer {
 	private GoFishController controller;
 	static GoFishModel model;
 	private Parent root;
+	private Integer playerNum;
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	public void start(Stage stage) {
-		
+		Alert a = new Alert(AlertType.NONE);
+		a.setTitle("Choose number of players");
+		ButtonType b2 = new ButtonType("2", ButtonData.OK_DONE);
+		a.getDialogPane().getButtonTypes().add(b2);
+		ButtonType b3 = new ButtonType("3", ButtonData.OK_DONE);
+		a.getDialogPane().getButtonTypes().add(b3);
+		ButtonType b4 = new ButtonType("4", ButtonData.OK_DONE);
+		a.getDialogPane().getButtonTypes().add(b4);
+		a.showAndWait().ifPresent(response -> {
+		    playerNum = Integer.valueOf(response.getText());
+		 });
 		try {
 			root = FXMLLoader.load(getClass().getResource("mainScene.fxml"));
 		} catch (IOException e1) {
@@ -39,7 +54,7 @@ public class GoFishView extends Application implements Observer {
 		stage.setScene(scene);
 		stage.show();
 		
-		model = new GoFishModel(4);
+		model = new GoFishModel(playerNum);
 		model.addObserver(this);
 		controller = new GoFishController(model);
 		controller.createPlayerDecks();
