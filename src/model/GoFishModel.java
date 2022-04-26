@@ -76,7 +76,7 @@ public class GoFishModel extends Observable{
 				this.players[i].addCard(deck.draw());
 			}
 		}
-		System.out.println(players[0].getHand());
+		updateView();
 	}
 	
 	public void updateView() {
@@ -166,6 +166,39 @@ public class GoFishModel extends Observable{
 	 */
 	public void loadGame() {
 		return;
+	}
+	
+	public String handToString(ArrayList<Card> toStr) {
+		String retval = "Deck: ";
+		for (Card card:toStr) {
+			retval += card.getRank() +" ";
+		}
+		return retval;
+	}
+
+	public String getOurCurrentHand() {
+		// TODO Auto-generated method stub
+		return handToString(this.players[this.whosTurn].getHand());
+	}
+
+	public String getPlayerDeckCount(int i) {
+		if (i == 2) {
+			int size = this.players[this.whosTurn+1].getHand().size();
+			return "Deck: " +size+ " cards";
+		}
+		if (i == 3) {
+			int size = this.players[this.whosTurn+2].getHand().size();
+			return "Deck: " +size+ " cards";
+		}
+		if (i == 4) {
+			int size = this.players[this.whosTurn+3].getHand().size();
+			return "Deck: " +size+ " cards";
+		}
+		return "";
+	}
+
+	public String getCardsLeft() {
+		return "Cards Left: " + Integer.toString(this.deck.size());
 	}
 }
 

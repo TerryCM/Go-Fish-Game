@@ -13,7 +13,7 @@ public class Deck {
     public Deck() {
         cards = new ArrayList<Card>();
         String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+        String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         // create 52 cards
         for (String suit : suits) {
             for (String rank : ranks) {
