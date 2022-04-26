@@ -1,9 +1,12 @@
 package model;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Observable;
 
 import util.GoFishPlayer;
+import util.Server;
 import util.Card;
 import util.Deck;
 
@@ -14,6 +17,8 @@ public class GoFishModel extends Observable{
 	 * keep track of which players turn it is, start at 0.
 	 */
 	private int whosTurn;
+	
+	
 	/**
 	 * keep track of if the game is over or not, start as false
 	 */
@@ -26,6 +31,8 @@ public class GoFishModel extends Observable{
 	 * how many players are present
 	 */
 	private int numberOfPlayers;
+	
+	private Server server;
 	/**
 	 * deck of cards being used for the game
 	 */
@@ -40,6 +47,41 @@ public class GoFishModel extends Observable{
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
 		this.deck = new Deck();
+		//this.server = createServer();
+	}
+	
+	public GoFishPlayer[] getPlayers () {
+		return this.players;
+	}
+	
+	private Server createServer() {
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(4000);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        server = new Server(serverSocket);
+        server.createServer();
+        return server;
+	}
+
+	public void startGame() {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 5; j++) {
+				if (this.players[i] == null) {
+					this.players[i] = new GoFishPlayer(i);
+				}
+				this.players[i].addCard(deck.draw());
+			}
+		}
+		System.out.println(players[0].getHand());
+	}
+	
+	public void updateView() {
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**

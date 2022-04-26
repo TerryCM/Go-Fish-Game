@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Circle fill="#586572" layoutX="300.0" layoutY="182.0" radius="109.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button layoutX="274.0" layoutY="169.0" mnemonicParsing="false" text="Draw" />
+      <Label layoutX="272.0" layoutY="47.0" prefHeight="25.0" prefWidth="55.0" text="Player 4" />
+      <Label layoutX="272.0" layoutY="309.0" prefHeight="25.0" prefWidth="55.0" text="Player 1" />
+      <Label layoutX="126.0" layoutY="169.0" prefHeight="25.0" prefWidth="55.0" text="Player 2" />
+      <Label layoutX="431.0" layoutY="169.0" prefHeight="25.0" prefWidth="55.0" text="Player 3" />
+      <Label id="topPlayerStack" layoutX="180.0" layoutY="34.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0" />
+      <Label id="rightPlayerStack" layoutX="479.0" layoutY="225.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0" />
+      <Label id="ourStack" layoutX="14.0" layoutY="360.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0" />
+      <Label id="leftPlayerStack" layoutX="14.0" layoutY="225.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0" />
+      <Label id="topPlayerDeck" layoutX="180.0" layoutY="14.0" prefHeight="25.0" prefWidth="55.0" text="Deck: " />
+      <Label id="rightPlayerDeck" layoutX="479.0" layoutY="200.0" prefHeight="25.0" prefWidth="55.0" text="Deck:" />
+      <Label id="ourDeck" layoutX="69.0" layoutY="360.0" prefHeight="25.0" prefWidth="55.0" text="Deck: " />
+      <Label id="leftPlayerDeck" layoutX="14.0" layoutY="200.0" prefHeight="25.0" prefWidth="55.0" text="Deck: " />
+      <Button layoutX="507.0" layoutY="14.0" mnemonicParsing="false" text="Save Game" />
+      <Button layoutX="271.0" layoutY="360.0" mnemonicParsing="false" text="Go Fish!" />
+   </children>
+</AnchorPane>

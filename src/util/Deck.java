@@ -35,6 +35,9 @@ public class Deck {
      * @return a random card from the deck
      */
     public Card draw() {
+    	if (cards.size() == 0) {
+    		return null;
+    	}
         int index = (int) (Math.random() * cards.size());
         return cards.remove(index);
     }
