@@ -30,7 +30,7 @@ public class GoFishModel extends Observable{
 	 * deck of cards being used for the game
 	 */
 	private Deck deck;
-	
+
 	/**
 	 * constructor for the model
 	 */
@@ -47,11 +47,7 @@ public class GoFishModel extends Observable{
 	 */
 	public void changeTurn() {
 		//if we are at the last player, change to first player
-		if (this.whosTurn == numberOfPlayers - 1) {
-			this.whosTurn = 0;
-		} else {
-			this.whosTurn += 1;
-		}
+		this.whosTurn = (this.whosTurn + 1) % this.numberOfPlayers;
 	}
 	
 	/**
@@ -62,20 +58,7 @@ public class GoFishModel extends Observable{
 		return this.whosTurn;
 	}
 	
-	/**
-	 * method to make the current player "go fish" from the deck.
-	 * 
-	 * this occurs if a player asks for a card and the player being asked
-	 * does not have any of that cards rank.
-	 * 
-	 * player pulls a random card from the deck and brings it to their hand
-	 */
-	public void playerGoFish() {
-		//draw random card from the shuffled deck
-		Card fishedCard = deck.draw();
-		//add to players hand
-		players[whosTurn].addCard(fishedCard);
-	}
+
 	
 	/**
 	 * method that controls a player asking for a card from another player
@@ -100,6 +83,7 @@ public class GoFishModel extends Observable{
 		} else {
 			//cards not taken, need to make the current player go fish.
 			return false;
+
 		}
 	}
 	
@@ -125,5 +109,18 @@ public class GoFishModel extends Observable{
 	public void loadGame() {
 		return;
 	}
+
+	/**
+	 *
+	 * @return players array
+	 */
+	public GoFishPlayer[] getPlayers() {
+		return players;
+	}
+
+	public Deck getDeck() {
+		return deck;
+	}
+
 }
 
