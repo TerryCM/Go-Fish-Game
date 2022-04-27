@@ -24,6 +24,9 @@ public class GoFishController implements Observer {
 		startGame();
 	}
 
+	/**
+	 * Starts the game
+	 */
 	private void startGame() {
 		// assuming that number of players is >= 3
 		// drawn cards for each player
@@ -34,6 +37,12 @@ public class GoFishController implements Observer {
 		}
 	}
 
+	/**
+	 *
+	 * @param rankAsked
+	 * @param playerToAsk
+	 * @return true if the player has the card asked for and false otherwise
+	 */
 	public boolean makeGuess(String rankAsked, int playerToAsk) {
 		if(!model.playerAskForCard(playerToAsk, rankAsked)) {
 				if(!playerGoFish(rankAsked)) {
@@ -43,8 +52,6 @@ public class GoFishController implements Observer {
 			}
 		return true;
 	}
-
-
 
 
 	/**
@@ -73,6 +80,11 @@ public class GoFishController implements Observer {
 		return model.getDeck();
 	}
 
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isGameOver() {
 		return model.isGameOver();
 	}

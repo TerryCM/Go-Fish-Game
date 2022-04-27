@@ -30,7 +30,7 @@ public class GoFishModel extends Observable{
 	 * deck of cards being used for the game
 	 */
 	private Deck deck;
-	
+
 	/**
 	 * constructor for the model
 	 */
@@ -39,6 +39,11 @@ public class GoFishModel extends Observable{
 		this.gameOver = false;
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
+		this.deck = new Deck();
+		//creating the players
+		for(int i = 0; i < numberOfPlayers; i++) {
+			players[i] = new GoFishPlayer(i);
+		}
 	}
 	
 	/**
