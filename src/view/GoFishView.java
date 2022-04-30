@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.GoFishModel;
 
 @SuppressWarnings({ "deprecation" })
@@ -31,11 +32,14 @@ public class GoFishView extends Application implements Observer {
 	public void start(Stage stage) {
 		
 		try {
-			root = FXMLLoader.load(getClass().getResource("mainScene.fxml"));
+			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		Scene scene = new Scene(root);
+		stage.setResizable(false);
+		stage.resizableProperty().setValue(Boolean.FALSE);
+		//stage.initStyle(StageStyle.UTILITY);
 		stage.setScene(scene);
 		stage.show();
 		
@@ -76,7 +80,7 @@ public class GoFishView extends Application implements Observer {
 	private class ButtonClickHandler implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent me) {
-			return;
+			System.out.println("Clicked by "+ me.getSource());
 		}
 	}
 	
