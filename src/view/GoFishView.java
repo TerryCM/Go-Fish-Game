@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -57,6 +58,7 @@ public class GoFishView extends Application implements Observer {
 		model = new GoFishModel(playerNum);
 		model.addObserver(this);
 		controller = new GoFishController(model);
+		controller.createDecks();
 		
 		// Parameters parameters = getParameters();
         // List<String> params = parameters.getRaw();
@@ -65,7 +67,11 @@ public class GoFishView extends Application implements Observer {
     }
 	
 	public void update(Observable o, Object arg) {
-
+		
+		
+		Button leftAsk = (Button) root.lookup("#askLeft");
+		leftAsk.setOnMouseClicked(new ButtonClickHandler());
+		
 		Label ourDeck = (Label) root.lookup("#ourDeck");
 		String updateDeck = controller.getOurCurrentHand();
 		ourDeck.setText(updateDeck);
@@ -91,6 +97,7 @@ public class GoFishView extends Application implements Observer {
 	private class ButtonClickHandler implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent me) {
+			System.out.println(me.getSource());
 			return;
 		}
 	}

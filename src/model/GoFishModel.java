@@ -44,17 +44,18 @@ public class GoFishModel extends Observable{
 		for(int i = 0; i < numberOfPlayers; i++) {
 			players[i] = new GoFishPlayer(i);
 		}
-		startGame();
 	}
 	
-	private void startGame() {
+	public void startGame() {
 		// assuming that number of players is >= 3
 		// drawn cards for each player
 		for (int i = 0; i < getPlayers().length; i++) {
-			for (int j = 0; j < 7; j++) {
+			for (int j = 0; j < 5; j++) {
 				getPlayers()[i].addCard(getDeck().draw());
 			}
 		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**

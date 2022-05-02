@@ -52,6 +52,9 @@ public class GoFishController {
 		return fishedCard.getRank().equals(rankAsked);
 	}
 
+	public void createDecks() {
+		model.startGame();
+	}
 	public GoFishPlayer[] getPlayers() {
 		return model.getPlayers();
 	}

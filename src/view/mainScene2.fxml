@@ -54,7 +54,7 @@
       <Button layoutX="429.0" layoutY="410.0" mnemonicParsing="false" text="Go Fish!" />
       <Button id="askRight" layoutX="411.0" layoutY="212.0" mnemonicParsing="false" text="Ask" />
       <Button id="askTop" layoutX="318.0" layoutY="94.0" mnemonicParsing="false" text="Ask" />
-      <Button id="askLeft" layoutX="218.0" layoutY="212.0" mnemonicParsing="false" text="Ask" />
+      <Button id="askLeft" fx:id="leftAsk" layoutX="218.0" layoutY="212.0" mnemonicParsing="false" text="Ask" />
       <Button id="askLeft" layoutX="314.0" layoutY="303.0" mnemonicParsing="false" text="Draw" />
       <Label id="cardsLeft" layoutX="301.0" layoutY="275.0" text="Cards Left:">
          <font>
@@ -77,22 +77,12 @@
                   <Image url="@../util/backcard.png" />
                </image>
             </ImageView>
+            <ImageView fitHeight="48.0" fitWidth="200.0" layoutX="77.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../util/backcard.png" />
+               </image>
+            </ImageView>
             <ImageView fitHeight="48.0" fitWidth="200.0" layoutX="43.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../util/backcard.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="200.0" layoutX="110.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../util/backcard.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="200.0" layoutX="143.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../util/backcard.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="200.0" layoutX="143.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../util/backcard.png" />
                </image>
