@@ -76,5 +76,13 @@ public class GoFishPlayer {
     public ArrayList<Card> getHand() {
     	return this.hand;
     }
+    
+    public String toStringHand() {
+        String handString = "";
+        for (Card c : hand) {
+            handString += c.getRank() + " " + c.getSuit() + " ";
+        }
+        return handString;
+    }
 }
 

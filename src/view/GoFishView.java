@@ -16,7 +16,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.GoFishModel;
 
@@ -68,6 +71,17 @@ public class GoFishView extends Application implements Observer {
 	
 	public void update(Observable o, Object arg) {
 		
+		
+		HBox ourHBox = (HBox) root.lookup("#ourHbox");
+		for (ImageView i:controller.getDeckImages()) {
+			if (i != null) {
+				i.setFitHeight(48);
+				i.setFitWidth(200);
+				i.setPreserveRatio(true);
+				ourHBox.getChildren().add(i);
+			}
+
+		}
 		
 		Button leftAsk = (Button) root.lookup("#askLeft");
 		leftAsk.setOnMouseClicked(new ButtonClickHandler());

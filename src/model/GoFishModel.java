@@ -1,11 +1,26 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import util.GoFishPlayer;
 import util.Card;
 import util.Deck;
+import util.GameSave;
 
 
 @SuppressWarnings("deprecation")
@@ -111,13 +126,88 @@ public class GoFishModel extends Observable{
 	public boolean isGameOver() {
 		return this.gameOver;
 	}
+
+	public void saveGame2() {
+
+		GameSave toSave = new GameSave(this.whosTurn, this.gameOver, this.players, this.deck);
+		
+		try {
+			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+
+			// Write objects to file
+			o.writeObject(toSave);
+			o.flush();
+
+			f.close();
+			o.close();
+
+			FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
+			ObjectInputStream oi = new ObjectInputStream(fi);
+
+			// Read objects
+			GameSave pr1 = (GameSave) oi.readObject();
+
+			
+			//System.out.println(this.handToString(pr1.getPlayers()[0].getHand()));
+
+			oi.close();
+			fi.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		} catch (IOException e) {
+			System.out.println("Error initializing stream");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * method to save a game in its current state
 	 */
 	public void saveGame() {
-		return;
-	}
+        Map<String, String> saveGameFile = new HashMap<>();
+        saveGameFile.put("whosTurn", Integer.toString(this.whosTurn));
+        saveGameFile.put("gameOver", String.valueOf(this.gameOver));
+        saveGameFile.put("numberOfPlayers", Integer.toString(this.numberOfPlayers));
+        //card ranks delimited by spaces
+        saveGameFile.put("deck", this.deck.toStringDeck());
+        //card ranks delimited by spaces, each player is their own line in the string.
+        //player 1 = line 1 of string, player 2 = line 2 of string, etc.
+        saveGameFile.put("hands", "");
+        //loop through all current players
+        String test = "";
+        for (int i = 0; i < this.numberOfPlayers; i++) {
+            //save the player's hand by concatenating the cards ranks followed by a new line
+            test += this.players[i].toStringHand() + "\n";
+        }
+        saveGameFile.put("hands", test);
+        // new file object
+        File file = new File("saveGameFile.txt");
+  
+        BufferedWriter bf = null;
+  
+        try {
+            bf = new BufferedWriter(new FileWriter(file));
+            for (Map.Entry<String, String> entry :
+                 saveGameFile.entrySet()) {
+                bf.write(entry.getKey() + ":" + entry.getValue());
+                bf.newLine();
+            }
+            bf.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                bf.close();
+            }
+            catch (Exception e) {
+            }
+        }
+    }
 	
 	/**
 	 * method to load a game given a save game file.
@@ -158,6 +248,46 @@ public class GoFishModel extends Observable{
 	
 	public String getCardsLeft() {
 		return "Cards Left: " + Integer.toString(this.deck.size());
+	}
+
+	public ImageView[] getDeckImages() {
+		ImageView[] retval = new ImageView[players[whosTurn].getHand().size()];
+		
+		int leftOffset = 0;
+		int topOffset = 0;
+		int count = 0;
+		for (Card c: players[whosTurn].getHand()) {
+			if (c.getRank().equals("Ace")) {
+				leftOffset = 0;
+			} else if (c.getRank().equals("Jack")) {
+				leftOffset = 85*10;
+			} else if (c.getRank().equals("Queen")) {
+				leftOffset = 85*11;
+			} else if (c.getRank().equals("King")) {
+				leftOffset = 85*12;
+			} else {
+				leftOffset = 85*(Integer.parseInt(c.getRank())-1);
+			}
+			
+			if (c.getSuit().equals("Hearts")) {
+				topOffset = 0;
+			} else if (c.getSuit().equals("Diamonds")) {
+				topOffset = 119*2;
+							
+			} else if (c.getSuit().equals("Clubs")) {
+				topOffset = 119*3;
+			} else if (c.getSuit().equals("Spades")) {
+				topOffset = 119*1;
+			}
+			Image image = new Image("util/isolatedcards.png");
+			ImageView iv3 = new ImageView(image);
+			Rectangle2D viewportRect = new Rectangle2D(5+leftOffset, 5+topOffset, 80, 119);
+			iv3.setViewport(viewportRect);
+			retval[count] = iv3;
+			count++;
+		}
+		
+		return retval;
 	}
 	
 }

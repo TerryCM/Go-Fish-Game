@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.GoFishModel;
 import util.Card;
 import util.Deck;
@@ -83,6 +85,15 @@ public class GoFishController {
 	public String getCardsLeft() {
 		// TODO Auto-generated method stub
 		return model.getCardsLeft();
+	}
+
+	public void saveGame() {
+		// TODO Auto-generated method stub
+		model.saveGame2();
+	}
+	
+	public ImageView[] getDeckImages() {
+		return model.getDeckImages();
 	}
 
 }

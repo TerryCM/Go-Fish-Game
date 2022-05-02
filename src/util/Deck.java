@@ -38,4 +38,12 @@ public class Deck {
         int index = (int) (Math.random() * cards.size());
         return cards.remove(index);
     }
+    
+    public String toStringDeck() {
+        String listString = "";
+        for (Card c : this.cards) {
+            listString += c.getRank() + " " + c.getSuit() + "\n";
+        }
+        return listString;
+    }
 }
