@@ -1,7 +1,6 @@
 package view;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,7 +22,6 @@ import model.GoFishModel;
 @SuppressWarnings({ "deprecation" })
 public class GoFishView extends Application implements Observer {
 	
-	private String networkName;
 	private GoFishController controller;
 	public GoFishModel model;
 	private Parent root;
@@ -46,19 +44,22 @@ public class GoFishView extends Application implements Observer {
 		    playerNum = Integer.valueOf(response.getText());
 		 });
 		try {
-			root = FXMLLoader.load(getClass().getResource("mainScene.fxml"));
+			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		Scene scene = new Scene(root);
+		stage.setResizable(false);
+		stage.resizableProperty().setValue(Boolean.FALSE);
 		stage.setScene(scene);
 		stage.show();
 		
 		model = new GoFishModel(playerNum);
 		model.addObserver(this);
 		controller = new GoFishController(model);
-		Parameters parameters = getParameters();
-        List<String> params = parameters.getRaw();
+		
+		// Parameters parameters = getParameters();
+        // List<String> params = parameters.getRaw();
 		
 		//networkName = params.get(0);
     }

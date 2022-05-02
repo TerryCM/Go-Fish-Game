@@ -72,5 +72,9 @@ public class GoFishPlayer {
         int index = (int) (Math.random() * hand.size());
         return hand.remove(index);
     }
+    
+    public ArrayList<Card> getHand() {
+    	return this.hand;
+    }
 }
 

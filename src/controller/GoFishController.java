@@ -5,11 +5,7 @@ import util.Card;
 import util.Deck;
 import util.GoFishPlayer;
 
-import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
-
-public class GoFishController implements Observer {
+public class GoFishController {
 
 	private GoFishModel model;
 
@@ -21,20 +17,6 @@ public class GoFishController implements Observer {
 	// consider making the controller a singleton
 	public GoFishController(GoFishModel model) {
 		this.model = model;
-		startGame();
-	}
-
-	/**
-	 * Starts the game
-	 */
-	private void startGame() {
-		// assuming that number of players is >= 3
-		// drawn cards for each player
-		for (int i = 0; i < getPlayers().length; i++) {
-			for (int j = 0; j < 7; j++) {
-				getPlayers()[i].addCard(getDeck().draw());
-			}
-		}
 	}
 
 	/**
@@ -73,34 +55,31 @@ public class GoFishController implements Observer {
 	public GoFishPlayer[] getPlayers() {
 		return model.getPlayers();
 	}
+	
 	public int getWhosTurn() {
 		return model.getWhosTurn();
 	}
+	
 	public Deck getDeck() {
 		return model.getDeck();
 	}
 
-
-	/**
-	 *
-	 * @return
-	 */
 	public boolean isGameOver() {
 		return model.isGameOver();
 	}
 
-
-	/**
-	 * This method is called whenever the observed object is changed. An
-	 * application calls an {@code Observable} object's
-	 * {@code notifyObservers} method to have all the object's
-	 * observers notified of the change.
-	 *
-	 * @param o   the observable object.
-	 * @param arg an argument passed to the {@code notifyObservers}
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-
+	public String getOurCurrentHand() {
+		// TODO Auto-generated method stub
+		return model.getOurCurrentHand();
 	}
+	
+	public String getPlayerDeckCount(int i) {
+		return model.getPlayerDeckCount(i);
+	}
+
+	public String getCardsLeft() {
+		// TODO Auto-generated method stub
+		return model.getCardsLeft();
+	}
+
 }
