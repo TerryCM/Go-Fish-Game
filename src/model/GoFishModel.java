@@ -45,6 +45,8 @@ public class GoFishModel extends Observable{
 	 * deck of cards being used for the game
 	 */
 	private Deck deck;
+	
+	private boolean turnOver;
 
 	/**
 	 * constructor for the model
@@ -52,6 +54,7 @@ public class GoFishModel extends Observable{
 	public GoFishModel(int numberOfPlayers) {
 		this.whosTurn = 0;
 		this.gameOver = false;
+		this.turnOver = false;
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
 		this.deck = new Deck();
@@ -79,6 +82,8 @@ public class GoFishModel extends Observable{
 	public void changeTurn() {
 		//if we are at the last player, change to first player
 		this.whosTurn = (this.whosTurn + 1) % this.numberOfPlayers;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -108,6 +113,8 @@ public class GoFishModel extends Observable{
 			for (Card c : stolenCards) {
 				//adding them to the hand of the player who asked
 				players[whosTurn].addCard(c);
+				setChanged();
+				notifyObservers();
 			}
 			//cards were taken
 			return true;
@@ -241,9 +248,17 @@ public class GoFishModel extends Observable{
 		return handToString(this.players[this.whosTurn].getHand());
 	}
 	
-	public String getPlayerDeckCount(int i) {
-		int size = this.players[this.whosTurn+(i-1)].getHand().size();
-		return "Deck: " +size+ " cards";
+	public String getPlayerDeckCount(String location) {
+		int player = 0;
+		if (location.equals("right")) {
+			player = (this.whosTurn + 3) % this.numberOfPlayers;
+		} else if (location.equals("top")) {
+			player = (this.whosTurn + 2) % this.numberOfPlayers;
+		} else if (location.equals("left")) {
+			player = (this.whosTurn + 1) % this.numberOfPlayers;
+		}
+		int size = this.players[player].getHand().size();
+		return "Deck: " +size;
 	}
 	
 	public String getCardsLeft() {
@@ -288,6 +303,33 @@ public class GoFishModel extends Observable{
 		}
 		
 		return retval;
+	}
+	
+
+	public boolean playerGoFish(String rankAsked) {
+		//draw random card from the shuffled deck
+		Card fishedCard = getDeck().draw();
+		//add to players hand
+		getPlayers()[getWhosTurn()].addCard(fishedCard);
+		setChanged();
+		notifyObservers();
+		return fishedCard.getRank().equals(rankAsked);
+	}
+	
+
+	public void setTurnOver(boolean b) {
+		// TODO Auto-generated method stub
+		this.turnOver = b;
+	}
+
+	public boolean isTurnOver() {
+		// TODO Auto-generated method stub
+		return this.turnOver;
+	}
+
+	public int getNumPlayers() {
+		// TODO Auto-generated method stub
+		return this.numberOfPlayers;
 	}
 	
 }

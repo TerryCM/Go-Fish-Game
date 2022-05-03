@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.GoFishModel;
 import util.Card;
@@ -30,7 +29,6 @@ public class GoFishController {
 	public boolean makeGuess(String rankAsked, int playerToAsk) {
 		if(!model.playerAskForCard(playerToAsk, rankAsked)) {
 				if(!playerGoFish(rankAsked)) {
-					model.changeTurn();
 					return false;
 				}
 			}
@@ -47,11 +45,7 @@ public class GoFishController {
 	 * player pulls a random card from the deck and brings it to their hand
 	 */
 	public boolean playerGoFish(String rankAsked) {
-		//draw random card from the shuffled deck
-		Card fishedCard = getDeck().draw();
-		//add to players hand
-		getPlayers()[getWhosTurn()].addCard(fishedCard);
-		return fishedCard.getRank().equals(rankAsked);
+		return model.playerGoFish(rankAsked);
 	}
 
 	public void createDecks() {
@@ -78,7 +72,7 @@ public class GoFishController {
 		return model.getOurCurrentHand();
 	}
 	
-	public String getPlayerDeckCount(int i) {
+	public String getPlayerDeckCount(String i) {
 		return model.getPlayerDeckCount(i);
 	}
 
@@ -94,6 +88,24 @@ public class GoFishController {
 	
 	public ImageView[] getDeckImages() {
 		return model.getDeckImages();
+	}
+
+	public void setTurnOver(boolean b) {
+		// TODO Auto-generated method stub
+		model.setTurnOver(b);
+	}
+	
+	public boolean isTurnOver() {
+		return model.isTurnOver();
+	}
+
+	public int getNumberOfPlayers() {
+		// TODO Auto-generated method stub
+		return model.getNumPlayers();
+	}
+
+	public void changeTurn() {
+		model.changeTurn();
 	}
 
 }
