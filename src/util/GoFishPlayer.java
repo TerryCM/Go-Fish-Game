@@ -18,6 +18,7 @@ public class GoFishPlayer {
         hand = new ArrayList<Card>();
         numberOfBooks = 0;
         this.name = "Player " + playerNumber;
+        this.book = new HashMap<String, Integer>();
     }
 
     public GoFishPlayer(int playerNumber, String name) {
@@ -25,6 +26,7 @@ public class GoFishPlayer {
         hand = new ArrayList<Card>();
         numberOfBooks = 0;
         this.name = name;
+        this.book = new HashMap<String, Integer>();
     }
 
     public String getName() {
@@ -51,14 +53,14 @@ public class GoFishPlayer {
      */
     public void addCard(Card card) {
         hand.add(card);
-        /* if (book.containsKey(card.getRank())) {
+        if (book.containsKey(card.getRank())) {
             book.put(card.getRank(), book.get(card.getRank()) + 1);
             if (book.get(card.getRank()) == 4) {
                 numberOfBooks++;
             }
         } else {
             book.put(card.getRank(), 1);
-        } */
+        } 
     }
 
     public int getNumberOfBooks() {
