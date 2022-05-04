@@ -19,19 +19,19 @@
             <Image url="@../util/backcard.png" />
          </image>
       </ImageView>
-      <Label layoutX="308.0" layoutY="68.0" prefHeight="25.0" prefWidth="55.0" text="Player 3">
+      <Label id="topName" layoutX="308.0" layoutY="68.0" prefHeight="25.0" prefWidth="55.0" text="Player 3">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <Label layoutX="236.0" layoutY="371.0" prefHeight="25.0" prefWidth="55.0" text="Player 1">
+      <Label id="ourName" layoutX="236.0" layoutY="371.0" prefHeight="25.0" prefWidth="55.0" text="Player 1">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <Label layoutX="219.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Player 2">
+      <Label id="leftName" layoutX="219.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Player 2">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font></Label>
-      <Label layoutX="409.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Player 4">
+      <Label id="rightName" layoutX="409.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Player 4">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
@@ -59,7 +59,7 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <Label id="ourDeck" layoutX="32.0" layoutY="371.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="195.0" text="Deck: ">
+      <Label id="ourDeck" layoutX="32.0" layoutY="371.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="195.0" text="Deck: " visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
@@ -75,12 +75,12 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <HBox id="ourHbox" layoutX="123.0" layoutY="397.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="248.0" />
-      <MenuBar layoutY="-3.0" prefHeight="25.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <HBox id="ourHbox" layoutX="123.0" layoutY="397.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="510.0" />
+      <MenuBar id="menuBar" layoutY="-3.0" prefHeight="25.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Go Fish">
             <items>
-              <MenuItem mnemonicParsing="false" text="Load game..." />
+              <MenuItem id="loadGame" mnemonicParsing="false" text="Load game..." />
                   <MenuItem mnemonicParsing="false" text="Save game" />
             </items>
           </Menu>

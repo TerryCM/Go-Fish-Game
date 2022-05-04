@@ -30,8 +30,9 @@ public class Deck {
     public int size() {
         return cards.size();
     }
-
-    /**
+    
+    
+	/**
      * @return a random card from the deck
      */
     public Card draw() {
@@ -42,9 +43,19 @@ public class Deck {
     public String toStringDeck() {
         String listString = "";
         for (Card c : this.cards) {
-            listString += c.getRank() + " " + c.getSuit() + "\n";
+            listString += c.getRank() + " " + c.getSuit() + ", ";
         }
         return listString;
     }
+
+	public void removeCards(ArrayList<String> cards) {
+		// TODO Auto-generated method stub
+		
+		
+	}
+
+	public void replaceDeck(ArrayList<Card> newCards) {
+		this.cards = newCards;
+	}
 
 }

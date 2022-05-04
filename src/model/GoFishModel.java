@@ -1,16 +1,20 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
@@ -123,8 +127,13 @@ public class GoFishModel extends Observable {
 			for (Card c : stolenCards) {
 				//adding them to the hand of the player who asked
 				players[whosTurn].addCard(c);
+				
 				setChanged();
 				notifyObservers();
+			}
+			
+			if (players[whosTurn].getBooks().get(rankOfCard) == 4) {
+				players[whosTurn].removeCards(rankOfCard);
 			}
 			//cards were taken
 			return true;
@@ -141,48 +150,18 @@ public class GoFishModel extends Observable {
 	 *
 	 * @return boolean if game is over
 	 */
-	public boolean isGameOver(){
-		// the game is over if there are no cards left in the deck
-		return this.deck.size() == 0;
-	}
-
-
-
-	public void saveGame2() {
-
-		GameSave toSave = new GameSave(this.whosTurn, this.gameOver, this.players, this.deck);
-
-		try {
-			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-
-			// Write objects to file
-			o.writeObject(toSave);
-			o.flush();
-
-			f.close();
-			o.close();
-
-			FileInputStream fi = new FileInputStream(new File("myObjects.txt"));
-			ObjectInputStream oi = new ObjectInputStream(fi);
-
-			// Read objects
-			GameSave pr1 = (GameSave) oi.readObject();
-
-
-			//System.out.println(this.handToString(pr1.getPlayers()[0].getHand()));
-
-			oi.close();
-			fi.close();
-
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-		} catch (IOException e) {
-			System.out.println("Error initializing stream");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	public boolean isGameOver() {
+		// the game is over if all books have been declared. 
+		boolean retval = false;
+		int count = 0;
+		for (int i=0; i < this.players.length; i++) {
+			count += this.players[i].getNumberOfBooks();
 		}
+		if (count == 13)
+			retval = true;
+		return retval;
 	}
+
 
 	/**
 	 * method to save a game in its current state
@@ -201,7 +180,7 @@ public class GoFishModel extends Observable {
         String test = "";
         for (int i = 0; i < this.numberOfPlayers; i++) {
             //save the player's hand by concatenating the cards ranks followed by a new line
-            test += this.players[i].toStringHand() + "\n";
+            test += this.players[i].toStringHand() + ", ";
         }
         saveGameFile.put("hands", test);
         // new file object
@@ -234,8 +213,97 @@ public class GoFishModel extends Observable {
 	 * method to load a game given a save game file.
 	 */
 	public void loadGame() {
+		Map<String, String> gameFile = HashMapFromTextFile();
+		
+		this.whosTurn = Integer.parseInt(gameFile.get("whosTurn"));
+        this.gameOver = Boolean.parseBoolean(gameFile.get("gameOver"));
+        this.numberOfPlayers = Integer.parseInt(gameFile.get("numberOfPlayers"));
+        this.players = new GoFishPlayer[this.numberOfPlayers];
+		
+		ArrayList<String> hands = new ArrayList<String>(Arrays.asList(gameFile.get("hands").split(",")));
+		
+		int count = 0;
+		for (String hand:hands) {
+			ArrayList<String> playersCards = new ArrayList<String>(Arrays.asList(hand.split(" ")));
+			playersCards.remove("");
+			int i = 0;
+			int j = 1;
+			while (j < playersCards.size()) {
+				if (players[count] == null) {
+					players[count] = new GoFishPlayer(count);
+				}
+				players[count].addCard(new Card(playersCards.get(j),playersCards.get(i)));
+				i += 2;
+				j += 2;
+			}
+			count += 1;
+		}
+		
+		this.deck = new Deck();
+		
+		ArrayList<String> deckList = new ArrayList<String>(Arrays.asList(gameFile.get("deck").split(",")));
+		ArrayList<Card> newCards = new ArrayList<Card>();
+		for (String card:deckList) {
+			ArrayList<String> cards = new ArrayList<String>(Arrays.asList(card.split(" ")));
+			cards.remove("");
+			newCards.add(new Card(cards.get(1), cards.get(0)));
+		}
+		this.deck.replaceDeck(newCards);
+		setChanged();
+		notifyObservers();
 		return;
 	}
+	
+	public static Map<String, String> HashMapFromTextFile()
+    {
+  
+        Map<String, String> map
+            = new HashMap<String, String>();
+        BufferedReader br = null;
+  
+        try {
+  
+            // create file object
+            File file = new File("saveGameFile.txt");
+  
+            // create BufferedReader object from the File
+            br = new BufferedReader(new FileReader(file));
+  
+            String line = null;
+  
+            // read file line by line
+            while ((line = br.readLine()) != null) {
+  
+                // split the line by :
+                String[] parts = line.split(":");
+  
+                // first part is name, second is number
+                String name = parts[0].trim();
+                String number = parts[1].trim();
+  
+                // put name, number in HashMap if they are
+                // not empty
+                if (!name.equals("") && !number.equals(""))
+                    map.put(name, number);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+  
+            // Always close the BufferedReader
+            if (br != null) {
+                try {
+                    br.close();
+                }
+                catch (Exception e) {
+                };
+            }
+        }
+  
+        return map;
+    }
 
 	/**
 	 *
@@ -273,6 +341,36 @@ public class GoFishModel extends Observable {
 		}
 		int size = this.players[player].getHand().size();
 		return "Deck: " +size;
+	}
+	
+	public String getPlayerName(String location) {
+		
+		int player = 0;
+		if (location.equals("right")) {
+			player = (this.whosTurn + 3) % this.numberOfPlayers;
+		} else if (location.equals("top")) {
+			player = (this.whosTurn + 2) % this.numberOfPlayers;
+		} else if (location.equals("left")) {
+			player = (this.whosTurn + 1) % this.numberOfPlayers;
+		} else {
+			player = this.whosTurn;
+		}
+		return "Player " +Integer.toString(player + 1);
+	}
+	
+	public String getPlayerBookCount(String location) {
+		int bookCount = 0;
+		if (location.equals("right")) {
+			bookCount = this.players[(this.whosTurn + 3) % this.numberOfPlayers].getNumberOfBooks();
+		} else if (location.equals("top")) {
+			bookCount = this.players[(this.whosTurn + 2) % this.numberOfPlayers].getNumberOfBooks();
+		} else if (location.equals("left")) {
+			bookCount = this.players[(this.whosTurn + 1) % this.numberOfPlayers].getNumberOfBooks();
+		} else if (location.equals("ours")) {
+			bookCount = this.players[this.whosTurn].getNumberOfBooks();
+		}
+		
+		return "Stack: " + Integer.toString(bookCount);
 	}
 
 	public String getCardsLeft() {
@@ -322,6 +420,9 @@ public class GoFishModel extends Observable {
 
 	public boolean playerGoFish(String rankAsked) {
 		//draw random card from the shuffled deck
+		if (getDeck().size() == 0) {
+			return false;
+		};
 		Card fishedCard = getDeck().draw();
 		//add to players hand
 		getPlayers()[getWhosTurn()].addCard(fishedCard);

@@ -5,6 +5,7 @@ import java.util.*;
 
 import controller.GoFishController;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -126,6 +129,13 @@ public class GoFishView extends Application implements Observer {
 		Button rightAsk = (Button) root.lookup("#askRight");
 		rightAsk.setOnMouseClicked(new ButtonClickHandler());
 		
+		MenuBar menu = (MenuBar) root.lookup("#menuBar");
+		
+		menu.getMenus().get(0).getItems().get(0).setOnAction(new LoadGameHandler());
+		menu.getMenus().get(0).getItems().get(1).setOnAction(new SaveGameHandler());
+		
+		
+		
 		if (!ais || controller.getWhosTurn() == 0) {
 			Label ourDeck = (Label) root.lookup("#ourDeck");
 			String updateDeck = controller.getOurCurrentHand();
@@ -147,6 +157,38 @@ public class GoFishView extends Application implements Observer {
 		Label cardsLeft = (Label) root.lookup("#cardsLeft");
 		String cardsLeftUpdate = controller.getCardsLeft();
 		cardsLeft.setText(cardsLeftUpdate);
+		
+		Label ourStack = (Label) root.lookup("#ourStack");
+		String ourStackUpdate = controller.getPlayerBookCount("ours");
+		ourStack.setText(ourStackUpdate);
+		
+		Label rightStack = (Label) root.lookup("#rightPlayerStack");
+		String rightStackUpdate = controller.getPlayerBookCount("right");
+		rightStack.setText(rightStackUpdate);
+		
+		Label topStack = (Label) root.lookup("#topPlayerStack");
+		String topStackUpdate = controller.getPlayerBookCount("top");
+		topStack.setText(topStackUpdate);
+		
+		Label leftStack = (Label) root.lookup("#leftPlayerStack");
+		String leftStackUpdate = controller.getPlayerBookCount("left");
+		leftStack.setText(leftStackUpdate);
+		
+		Label ourName = (Label) root.lookup("#ourName");
+		String ourNameUpdate = controller.getPlayerName("ours");
+		ourName.setText(ourNameUpdate);
+		
+		Label rightName = (Label) root.lookup("#rightName");
+		String rightNameUpdate = controller.getPlayerName("right");
+		rightName.setText(rightNameUpdate);
+		
+		Label topName = (Label) root.lookup("#topName");
+		String topNameUpdate = controller.getPlayerName("top");
+		topName.setText(topNameUpdate);
+		
+		Label leftName = (Label) root.lookup("#leftName");
+		String leftNameUpdate = controller.getPlayerName("left");
+		leftName.setText(leftNameUpdate);
 
 		
 	}
@@ -227,6 +269,22 @@ public class GoFishView extends Application implements Observer {
 				manageAiTurn();
 			}
 			return;
+		}
+	}
+	
+	private class LoadGameHandler implements EventHandler<ActionEvent> {
+		
+		@Override
+		public void handle(ActionEvent ae) {
+			controller.loadGame();
+		}
+	}
+	
+private class SaveGameHandler implements EventHandler<ActionEvent> {
+		
+		@Override
+		public void handle(ActionEvent ae) {
+			controller.saveGame();
 		}
 	}
 

@@ -28,6 +28,10 @@ public class GoFishPlayer {
         this.name = name;
         this.book = new HashMap<String, Integer>();
     }
+    
+    public HashMap<String,Integer> getBooks() {
+    	return this.book;
+    }
 
     public String getName() {
         return this.name;

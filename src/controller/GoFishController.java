@@ -116,7 +116,7 @@ public class GoFishController {
 
 	public void saveGame() {
 		// TODO Auto-generated method stub
-		model.saveGame2();
+		model.saveGame();
 	}
 	
 	public ImageView[] getDeckImages() {
@@ -139,6 +139,21 @@ public class GoFishController {
 
 	public void changeTurn() {
 		model.changeTurn();
+	}
+
+	public String getPlayerBookCount(String string) {
+		// TODO Auto-generated method stub
+		return model.getPlayerBookCount(string);
+	}
+
+	public String getPlayerName(String string) {
+		// TODO Auto-generated method stub
+		return model.getPlayerName(string);
+	}
+
+	public void loadGame() {
+		// TODO Auto-generated method stub
+		model.loadGame();
 	}
 
 }
