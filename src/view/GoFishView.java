@@ -5,6 +5,7 @@ import java.util.*;
 
 import controller.GoFishController;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +44,7 @@ public class GoFishView extends Application implements Observer {
 	private Parent root;
 	private Integer playerNum;
 	private boolean ais;
+	private int startingHandSize;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -57,7 +61,7 @@ public class GoFishView extends Application implements Observer {
 		a.getDialogPane().getButtonTypes().add(b4);
 		a.showAndWait().ifPresent(response -> {
 		    playerNum = Integer.valueOf(response.getText());
-		 });
+		});
 		
 		Alert a2 = new Alert(AlertType.NONE);
 		a2.setTitle("Would you like to battle AIs?");
@@ -73,6 +77,17 @@ public class GoFishView extends Application implements Observer {
 			}
 		 });
 		
+		Alert a3 = new Alert(AlertType.NONE);
+		a3.setTitle("What starting hand size would you like?");
+		ButtonType b5 = new ButtonType("5", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b5);
+		ButtonType b7 = new ButtonType("7", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b7);
+		ButtonType b9 = new ButtonType("9", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b9);
+		a3.showAndWait().ifPresent(response -> {
+			startingHandSize = Integer.valueOf(response.getText());
+		 });
 		try {
 			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
 		} catch (IOException e1) {
@@ -84,7 +99,7 @@ public class GoFishView extends Application implements Observer {
 		stage.setScene(scene);
 		stage.show();
 		
-		model = new GoFishModel(playerNum, ais);
+		model = new GoFishModel(playerNum, ais, startingHandSize);
 		model.addObserver(this);
 		controller = new GoFishController(model);
 		controller.createDecks();
@@ -126,6 +141,13 @@ public class GoFishView extends Application implements Observer {
 		Button rightAsk = (Button) root.lookup("#askRight");
 		rightAsk.setOnMouseClicked(new ButtonClickHandler());
 		
+		MenuBar menu = (MenuBar) root.lookup("#menuBar");
+		
+		menu.getMenus().get(0).getItems().get(0).setOnAction(new LoadGameHandler());
+		menu.getMenus().get(0).getItems().get(1).setOnAction(new SaveGameHandler());
+		
+		
+		
 		if (!ais || controller.getWhosTurn() == 0) {
 			Label ourDeck = (Label) root.lookup("#ourDeck");
 			String updateDeck = controller.getOurCurrentHand();
@@ -147,6 +169,38 @@ public class GoFishView extends Application implements Observer {
 		Label cardsLeft = (Label) root.lookup("#cardsLeft");
 		String cardsLeftUpdate = controller.getCardsLeft();
 		cardsLeft.setText(cardsLeftUpdate);
+		
+		Label ourStack = (Label) root.lookup("#ourStack");
+		String ourStackUpdate = controller.getPlayerBookCount("ours");
+		ourStack.setText(ourStackUpdate);
+		
+		Label rightStack = (Label) root.lookup("#rightPlayerStack");
+		String rightStackUpdate = controller.getPlayerBookCount("right");
+		rightStack.setText(rightStackUpdate);
+		
+		Label topStack = (Label) root.lookup("#topPlayerStack");
+		String topStackUpdate = controller.getPlayerBookCount("top");
+		topStack.setText(topStackUpdate);
+		
+		Label leftStack = (Label) root.lookup("#leftPlayerStack");
+		String leftStackUpdate = controller.getPlayerBookCount("left");
+		leftStack.setText(leftStackUpdate);
+		
+		Label ourName = (Label) root.lookup("#ourName");
+		String ourNameUpdate = controller.getPlayerName("ours");
+		ourName.setText(ourNameUpdate);
+		
+		Label rightName = (Label) root.lookup("#rightName");
+		String rightNameUpdate = controller.getPlayerName("right");
+		rightName.setText(rightNameUpdate);
+		
+		Label topName = (Label) root.lookup("#topName");
+		String topNameUpdate = controller.getPlayerName("top");
+		topName.setText(topNameUpdate);
+		
+		Label leftName = (Label) root.lookup("#leftName");
+		String leftNameUpdate = controller.getPlayerName("left");
+		leftName.setText(leftNameUpdate);
 
 		
 	}
@@ -176,6 +230,16 @@ public class GoFishView extends Application implements Observer {
 				boolean[] hasRank = new boolean[2];
 				a.showAndWait().ifPresent(response -> {
 				    hasRank[0] = controller.makeGuess(response.getText(), playerNum[0]);
+				 // lets ai's track moves
+					for (GoFishPlayer p: controller.getPlayers()) {
+						if (p instanceof GoFishAi && p.getPlayerNumber() != whosturn) {
+							GoFishAi tempai = (GoFishAi) p;
+							tempai.addOpposingMove(response.getText(), whosturn);
+							if (hasRank[0]) {
+								tempai.removeOpposingMove(response.getText(), playerNum[0]);
+							}
+						}
+					}
 				 });
 				
 				TextFlow tf = (TextFlow) root.lookup("#textFlow");
@@ -229,13 +293,57 @@ public class GoFishView extends Application implements Observer {
 			return;
 		}
 	}
+	
+	private class LoadGameHandler implements EventHandler<ActionEvent> {
+		
+		@Override
+		public void handle(ActionEvent ae) {
+			controller.loadGame();
+		}
+	}
+	
+private class SaveGameHandler implements EventHandler<ActionEvent> {
+		
+		@Override
+		public void handle(ActionEvent ae) {
+			controller.saveGame();
+		}
+	}
 
 	public void manageAiTurn() {
 		int whosturn = controller.getWhosTurn();
 		boolean hasRank;
 		
-		hasRank = controller.makeGuessAi(whosturn);
+		GoFishAi ai = (GoFishAi) controller.getPlayers()[whosturn];
+		int index = ai.checkOpposingCards();
+		int playerToAsk;
+		String rankAsked;
+		if (index != -1) {
+			playerToAsk = ai.getOpponentNum(index);
+			rankAsked = ai.getOpposingCard(index);
+			ai.removeOpposingCard(index);
+		} else {
+			ArrayList<Card> hand = ai.getHand();
+			Random rand = new Random();
+			do {
+			playerToAsk = rand.nextInt(controller.getNumberOfPlayers());
+			} while (playerToAsk == whosturn);
+			int  rand_int = rand.nextInt(hand.size());
+			rankAsked = hand.get(rand_int).getRank();
+		}
 		
+		hasRank = controller.makeGuess(rankAsked, playerToAsk);
+		
+		// lets ai's track moves
+		for (GoFishPlayer p: controller.getPlayers()) {
+			if (p instanceof GoFishAi && p.getPlayerNumber() != whosturn) {
+				GoFishAi tempai = (GoFishAi) p;
+				tempai.addOpposingMove(rankAsked, whosturn);
+				if (hasRank) {
+					tempai.removeOpposingMove(rankAsked, playerToAsk);
+				}
+			}
+		}
 		TextFlow tf = (TextFlow) root.lookup("#textFlow");
 		Text text1;
 		if (hasRank) {
@@ -253,13 +361,13 @@ public class GoFishView extends Application implements Observer {
 
 
 			}else{
-				text1 = new Text("Player " + whosturn + " got a card");
+				text1 = new Text(" Got " + rankAsked + " from player " + (playerToAsk+1) + ".");
 				manageAiTurn();
 			}
 
 
 		} else {
-			text1 = new Text("Player " + whosturn + "'s turn is over. Click next turn!");
+			text1 = new Text("Player " + (whosturn+1) + "'s turn. Player " +(playerToAsk+1) + " didn't have " + rankAsked + ". Click next turn!");
 			Button nextTurn = (Button) root.lookup("#nextTurn");
 			nextTurn.setVisible(true);
 			controller.setTurnOver(true);

@@ -1,5 +1,5 @@
 .anchor {
-    -fx-background-image:url('file:@../util/pokerfelt.png');
+    -fx-background-image:url("../util/pokerfelt.png");
     -fx-background-size: 100% 100%;
 }
 
