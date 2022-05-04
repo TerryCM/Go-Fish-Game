@@ -18,6 +18,7 @@ public class GoFishPlayer {
         hand = new ArrayList<Card>();
         numberOfBooks = 0;
         this.name = "Player " + playerNumber;
+        this.book = new HashMap<String, Integer>();
     }
 
     public GoFishPlayer(int playerNumber, String name) {
