@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import model.GoFishModel;
 import util.Card;
 import util.Deck;
+import util.GoFishAi;
 import util.GoFishPlayer;
 
 @SuppressWarnings({ "deprecation" })
@@ -39,6 +40,7 @@ public class GoFishView extends Application implements Observer {
 	public GoFishModel model;
 	private Parent root;
 	private Integer playerNum;
+	private boolean ais;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -56,6 +58,21 @@ public class GoFishView extends Application implements Observer {
 		a.showAndWait().ifPresent(response -> {
 		    playerNum = Integer.valueOf(response.getText());
 		 });
+		
+		Alert a2 = new Alert(AlertType.NONE);
+		a2.setTitle("Would you like to battle AIs?");
+		ButtonType by = new ButtonType("Yes", ButtonData.OK_DONE);
+		a2.getDialogPane().getButtonTypes().add(by);
+		ButtonType bn = new ButtonType("No", ButtonData.OK_DONE);
+		a2.getDialogPane().getButtonTypes().add(bn);
+		a2.showAndWait().ifPresent(response -> {
+			if ("No".equals(response.getText())) {
+				ais = false;
+			} else if ("Yes".equals(response.getText())) {
+				ais = true;
+			}
+		 });
+		
 		try {
 			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
 		} catch (IOException e1) {
@@ -67,7 +84,7 @@ public class GoFishView extends Application implements Observer {
 		stage.setScene(scene);
 		stage.show();
 		
-		model = new GoFishModel(playerNum);
+		model = new GoFishModel(playerNum, ais);
 		model.addObserver(this);
 		controller = new GoFishController(model);
 		controller.createDecks();
@@ -85,14 +102,16 @@ public class GoFishView extends Application implements Observer {
 		
 		HBox ourHBox = (HBox) root.lookup("#ourHbox");
 		ourHBox.getChildren().clear();
-		for (ImageView i:controller.getDeckImages()) {
-			if (i != null) {
-				i.setFitHeight(48);
-				i.setFitWidth(200);
-				i.setPreserveRatio(true);
-				ourHBox.getChildren().add(i);
+		if (!ais || controller.getWhosTurn() == 0) {
+			for (ImageView i:controller.getDeckImages()) {
+				if (i != null) {
+					i.setFitHeight(48);
+					i.setFitWidth(200);
+					i.setPreserveRatio(true);
+					ourHBox.getChildren().add(i);
+				}
+	
 			}
-
 		}
 		
 		Button nextTurn = (Button) root.lookup("#nextTurn");
@@ -107,9 +126,11 @@ public class GoFishView extends Application implements Observer {
 		Button rightAsk = (Button) root.lookup("#askRight");
 		rightAsk.setOnMouseClicked(new ButtonClickHandler());
 		
-		Label ourDeck = (Label) root.lookup("#ourDeck");
-		String updateDeck = controller.getOurCurrentHand();
-		ourDeck.setText(updateDeck);
+		if (!ais || controller.getWhosTurn() == 0) {
+			Label ourDeck = (Label) root.lookup("#ourDeck");
+			String updateDeck = controller.getOurCurrentHand();
+			ourDeck.setText(updateDeck);
+		}
 
 		Label leftDeck = (Label) root.lookup("#leftPlayerDeck");
 		String leftUpdate = controller.getPlayerDeckCount("left");
@@ -202,7 +223,49 @@ public class GoFishView extends Application implements Observer {
 			controller.setTurnOver(false);
 			Button nextTurn = (Button) root.lookup("#nextTurn");
 			nextTurn.setVisible(false);
+			if (controller.getPlayers()[controller.getWhosTurn()] instanceof GoFishAi) {
+				manageAiTurn();
+			}
 			return;
 		}
+	}
+
+	public void manageAiTurn() {
+		int whosturn = controller.getWhosTurn();
+		boolean hasRank;
+		
+		hasRank = controller.makeGuessAi(whosturn);
+		
+		TextFlow tf = (TextFlow) root.lookup("#textFlow");
+		Text text1;
+		if (hasRank) {
+			// check if the game is over
+			if(controller.isGameOver()){
+				// check number of books for every player.
+				GoFishPlayer winner = null;
+				for (int i = 0; i < controller.getNumberOfPlayers(); i++) {
+					if (controller.getPlayers()[i].getNumberOfBooks() > controller.getPlayers()[whosturn].getNumberOfBooks()) {
+						winner = controller.getPlayers()[i];
+					}
+				}
+
+				text1 = new Text("Game Over! " + winner.getName() + " wins!");
+
+
+			}else{
+				text1 = new Text("Player " + whosturn + " got a card");
+				manageAiTurn();
+			}
+
+
+		} else {
+			text1 = new Text("Player " + whosturn + "'s turn is over. Click next turn!");
+			Button nextTurn = (Button) root.lookup("#nextTurn");
+			nextTurn.setVisible(true);
+			controller.setTurnOver(true);
+		}
+	    text1.setFill(Color.RED);
+	    text1.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
+	    tf.getChildren().add(text1);
 	}
 }

@@ -52,14 +52,14 @@ public class GoFishPlayer {
      */
     public void addCard(Card card) {
         hand.add(card);
-        if (book.containsKey(card.getRank())) {
+        /* if (book.containsKey(card.getRank())) {
             book.put(card.getRank(), book.get(card.getRank()) + 1);
             if (book.get(card.getRank()) == 4) {
                 numberOfBooks++;
             }
         } else {
             book.put(card.getRank(), 1);
-        }
+        } */
     }
 
     public int getNumberOfBooks() {

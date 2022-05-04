@@ -21,6 +21,7 @@ import util.GoFishPlayer;
 import util.Card;
 import util.Deck;
 import util.GameSave;
+import util.GoFishAi;
 
 
 @SuppressWarnings("deprecation")
@@ -51,7 +52,7 @@ public class GoFishModel extends Observable {
 	/**
 	 * constructor for the model
 	 */
-	public GoFishModel(int numberOfPlayers) {
+	public GoFishModel(int numberOfPlayers, boolean ais) {
 		this.whosTurn = 0;
 		this.gameOver = false;
 		this.turnOver = false;
@@ -61,8 +62,15 @@ public class GoFishModel extends Observable {
 
 
 		//creating the players
-		for (int i = 0; i < numberOfPlayers; i++) {
-			players[i] = new GoFishPlayer(i);
+		if (ais) {
+			players[0] = new GoFishPlayer(0);
+			for (int i = 1; i < numberOfPlayers; i++) {
+				players[i] = new GoFishAi(i);
+			}
+		} else {
+			for (int i = 0; i < numberOfPlayers; i++) {
+				players[i] = new GoFishPlayer(i);
+			}
 		}
 	}
 
