@@ -98,7 +98,7 @@ public class GoFishView extends Application implements Observer {
 
 		// Replace this values with the ones retrieved from the user
 		boolean multiDeck = true;
-		int numDecks = 1;
+		int numDecks = 3;
 		model = new GoFishModel(playerNum, ais, multiDeck, numDecks, startingHandSize);
 		model.addObserver(this);
 		controller = new GoFishController(model);
@@ -132,14 +132,67 @@ public class GoFishView extends Application implements Observer {
 		Button nextTurn = (Button) root.lookup("#nextTurn");
 		nextTurn.setOnMouseClicked(new NextTurnButtonClickHandler());
 		
+		Label cardsLeft = (Label) root.lookup("#cardsLeft");
+		String cardsLeftUpdate = controller.getCardsLeft();
+		cardsLeft.setText(cardsLeftUpdate);
+
+		Label ourStack = (Label) root.lookup("#ourStack");
+		String ourStackUpdate = controller.getPlayerBookCount("ours");
+		ourStack.setText(ourStackUpdate);
+
+		Label ourName = (Label) root.lookup("#ourName");
+		String ourNameUpdate = controller.getPlayerName("ours");
+		ourName.setText(ourNameUpdate);
+
+		
 		Button leftAsk = (Button) root.lookup("#askLeft");
 		leftAsk.setOnMouseClicked(new ButtonClickHandler());
 		
-		Button topAsk = (Button) root.lookup("#askTop");
-		topAsk.setOnMouseClicked(new ButtonClickHandler());
+		Label leftDeck = (Label) root.lookup("#leftPlayerDeck");
+		String leftUpdate = controller.getPlayerDeckCount("left");
+		leftDeck.setText(leftUpdate);
+
+		Label leftStack = (Label) root.lookup("#leftPlayerStack");
+		String leftStackUpdate = controller.getPlayerBookCount("left");
+		leftStack.setText(leftStackUpdate);
+
+		Label leftName = (Label) root.lookup("#leftName");
+		String leftNameUpdate = controller.getPlayerName("left");
+		leftName.setText(leftNameUpdate);
 		
-		Button rightAsk = (Button) root.lookup("#askRight");
-		rightAsk.setOnMouseClicked(new ButtonClickHandler());
+		if (playerNum >= 3) {
+			Button topAsk = (Button) root.lookup("#askTop");
+			topAsk.setOnMouseClicked(new ButtonClickHandler());
+			
+			Label topDeck = (Label) root.lookup("#topPlayerDeck");
+			String topUpdate = controller.getPlayerDeckCount("top");
+			topDeck.setText(topUpdate);
+	
+			Label topStack = (Label) root.lookup("#topPlayerStack");
+			String topStackUpdate = controller.getPlayerBookCount("top");
+			topStack.setText(topStackUpdate);
+	
+			Label topName = (Label) root.lookup("#topName");
+			String topNameUpdate = controller.getPlayerName("top");
+			topName.setText(topNameUpdate);
+			
+			if (playerNum == 4) {
+				Button rightAsk = (Button) root.lookup("#askRight");
+				rightAsk.setOnMouseClicked(new ButtonClickHandler());
+				
+				Label rightDeck = (Label) root.lookup("#rightPlayerDeck");
+				String rightUpdate = controller.getPlayerDeckCount("right");
+				rightDeck.setText(rightUpdate);
+		
+				Label rightStack = (Label) root.lookup("#rightPlayerStack");
+				String rightStackUpdate = controller.getPlayerBookCount("right");
+				rightStack.setText(rightStackUpdate);
+		
+				Label rightName = (Label) root.lookup("#rightName");
+				String rightNameUpdate = controller.getPlayerName("right");
+				rightName.setText(rightNameUpdate);
+			}
+		}
 		
 		MenuBar menu = (MenuBar) root.lookup("#menuBar");
 		
@@ -153,55 +206,6 @@ public class GoFishView extends Application implements Observer {
 			String updateDeck = controller.getOurCurrentHand();
 			ourDeck.setText(updateDeck);
 		}
-
-		Label leftDeck = (Label) root.lookup("#leftPlayerDeck");
-		String leftUpdate = controller.getPlayerDeckCount("left");
-		leftDeck.setText(leftUpdate);
-
-		Label topDeck = (Label) root.lookup("#topPlayerDeck");
-		String topUpdate = controller.getPlayerDeckCount("top");
-		topDeck.setText(topUpdate);
-
-		Label rightDeck = (Label) root.lookup("#rightPlayerDeck");
-		String rightUpdate = controller.getPlayerDeckCount("right");
-		rightDeck.setText(rightUpdate);
-
-		Label cardsLeft = (Label) root.lookup("#cardsLeft");
-		String cardsLeftUpdate = controller.getCardsLeft();
-		cardsLeft.setText(cardsLeftUpdate);
-		
-		Label ourStack = (Label) root.lookup("#ourStack");
-		String ourStackUpdate = controller.getPlayerBookCount("ours");
-		ourStack.setText(ourStackUpdate);
-		
-		Label rightStack = (Label) root.lookup("#rightPlayerStack");
-		String rightStackUpdate = controller.getPlayerBookCount("right");
-		rightStack.setText(rightStackUpdate);
-		
-		Label topStack = (Label) root.lookup("#topPlayerStack");
-		String topStackUpdate = controller.getPlayerBookCount("top");
-		topStack.setText(topStackUpdate);
-		
-		Label leftStack = (Label) root.lookup("#leftPlayerStack");
-		String leftStackUpdate = controller.getPlayerBookCount("left");
-		leftStack.setText(leftStackUpdate);
-		
-		Label ourName = (Label) root.lookup("#ourName");
-		String ourNameUpdate = controller.getPlayerName("ours");
-		ourName.setText(ourNameUpdate);
-		
-		Label rightName = (Label) root.lookup("#rightName");
-		String rightNameUpdate = controller.getPlayerName("right");
-		rightName.setText(rightNameUpdate);
-		
-		Label topName = (Label) root.lookup("#topName");
-		String topNameUpdate = controller.getPlayerName("top");
-		topName.setText(topNameUpdate);
-		
-		Label leftName = (Label) root.lookup("#leftName");
-		String leftNameUpdate = controller.getPlayerName("left");
-		leftName.setText(leftNameUpdate);
-
 		
 	}
 	

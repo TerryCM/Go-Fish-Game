@@ -1,5 +1,5 @@
 numberOfPlayers:4
-hands:King Clubs 7 Spades 2 Diamonds 6 Diamonds 10 Spades 7 Hearts , 4 Spades 3 Spades 5 Clubs 5 Spades 6 Spades King Spades , Ace Spades 10 Diamonds 6 Hearts Ace Diamonds Jack Diamonds , 10 Clubs 5 Diamonds Jack Spades 10 Hearts 9 Clubs , 
-deck:8 Diamonds, 8 Spades, Queen Diamonds, Ace Clubs, Queen Clubs, 6 Clubs, 4 Clubs, 2 Spades, Queen Hearts, 9 Diamonds, 9 Spades, King Diamonds, Jack Clubs, 4 Hearts, King Hearts, 2 Hearts, 8 Hearts, 8 Clubs, Jack Hearts, 5 Hearts, 7 Diamonds, 3 Diamonds, 4 Diamonds, 3 Hearts, Queen Spades, 9 Hearts, 7 Clubs, 3 Clubs, 2 Clubs, Ace Hearts, 
-whosTurn:2
+hands:King Clubs 7 Spades 2 Diamonds 6 Diamonds 10 Spades 7 Hearts , 4 Spades 3 Spades 6 Spades King Spades , Ace Spades 6 Hearts Ace Diamonds Jack Diamonds 3 Diamonds , 10 Clubs 5 Diamonds Jack Spades 10 Hearts 9 Clubs 5 Clubs 5 Spades 10 Diamonds Queen Hearts , 
+deck:8 Diamonds, 8 Spades, Queen Diamonds, Ace Clubs, Queen Clubs, 6 Clubs, 4 Clubs, 2 Spades, 9 Diamonds, 9 Spades, King Diamonds, Jack Clubs, 4 Hearts, King Hearts, 2 Hearts, 8 Hearts, 8 Clubs, Jack Hearts, 5 Hearts, 7 Diamonds, 4 Diamonds, 3 Hearts, Queen Spades, 9 Hearts, 7 Clubs, 3 Clubs, 2 Clubs, Ace Hearts, 
+whosTurn:0
 gameOver:false

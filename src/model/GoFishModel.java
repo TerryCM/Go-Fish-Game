@@ -67,9 +67,6 @@ public class GoFishModel extends Observable {
 		this.players = new GoFishPlayer[this.numberOfPlayers];
 		this.deck = multiDeck ? new MultiDeck(numberOfDecks) : new Deck();
 
-
-
-
 		//creating the players
 		if (ais) {
 			players[0] = new GoFishPlayer(0);
