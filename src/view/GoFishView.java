@@ -42,6 +42,7 @@ public class GoFishView extends Application implements Observer {
 	private Integer playerNum;
 	private boolean ais;
 	private int startingHandSize;
+	private int numDecks;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -84,9 +85,17 @@ public class GoFishView extends Application implements Observer {
 		a3.getDialogPane().getButtonTypes().add(b9);
 		a3.showAndWait().ifPresent(response -> {
 			startingHandSize = Integer.valueOf(response.getText());
-		 });
+		});
+		
+
 		try {
+			if (playerNum == 2) {
 			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
+			} else if (playerNum == 3) {
+			root = FXMLLoader.load(getClass().getResource("mainScene3.fxml"));
+			} else if (playerNum == 4) {
+			root = FXMLLoader.load(getClass().getResource("mainScene4.fxml"));
+			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -97,8 +106,18 @@ public class GoFishView extends Application implements Observer {
 		stage.show();
 
 		// Replace this values with the ones retrieved from the user
-		boolean multiDeck = true;
-		int numDecks = 3;
+		boolean multiDeck = true;		
+		Alert a4 = new Alert(AlertType.NONE);
+		a4.setTitle("How many decks would you like to play with?");
+		ButtonType d1 = new ButtonType("1", ButtonData.OK_DONE);
+		a4.getDialogPane().getButtonTypes().add(d1);
+		ButtonType d2 = new ButtonType("2", ButtonData.OK_DONE);
+		a4.getDialogPane().getButtonTypes().add(d2);
+		ButtonType d3 = new ButtonType("3", ButtonData.OK_DONE);
+		a4.getDialogPane().getButtonTypes().add(d3);
+		a4.showAndWait().ifPresent(response -> {
+			numDecks = Integer.valueOf(response.getText())-1;
+		});
 		model = new GoFishModel(playerNum, ais, multiDeck, numDecks, startingHandSize);
 		model.addObserver(this);
 		controller = new GoFishController(model);
