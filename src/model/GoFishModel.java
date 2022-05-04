@@ -47,6 +47,10 @@ public class GoFishModel extends Observable {
 	 */
 	private int numberOfPlayers;
 	/**
+	 * the size of the starting hand
+	 */
+	private int startingHandSize;
+	/**
 	 * deck of cards being used for the game
 	 */
 	private Deck deck;
@@ -56,11 +60,12 @@ public class GoFishModel extends Observable {
 	/**
 	 * constructor for the model
 	 */
-	public GoFishModel(int numberOfPlayers, boolean ais) {
+	public GoFishModel(int numberOfPlayers, boolean ais, int startingHandSize) {
 		this.whosTurn = 0;
 		this.gameOver = false;
 		this.turnOver = false;
 		this.numberOfPlayers = numberOfPlayers;
+		this.startingHandSize = startingHandSize;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
 		this.deck = new Deck();
 
@@ -82,7 +87,7 @@ public class GoFishModel extends Observable {
 		// assuming that number of players is >= 3
 		// drawn cards for each player
 		for (int i = 0; i < getPlayers().length; i++) {
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < startingHandSize; j++) {
 				getPlayers()[i].addCard(getDeck().draw());
 			}
 		}
@@ -134,6 +139,12 @@ public class GoFishModel extends Observable {
 			
 			if (players[whosTurn].getBooks().get(rankOfCard) == 4) {
 				players[whosTurn].removeCards(rankOfCard);
+				for (GoFishPlayer p: players) {
+					if (p instanceof GoFishAi) {
+						GoFishAi tempai = (GoFishAi) p;
+						tempai.removeRankTracking(rankOfCard);
+					}
+				}
 			}
 			//cards were taken
 			return true;

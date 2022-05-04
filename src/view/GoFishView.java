@@ -44,6 +44,7 @@ public class GoFishView extends Application implements Observer {
 	private Parent root;
 	private Integer playerNum;
 	private boolean ais;
+	private int startingHandSize;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -60,7 +61,7 @@ public class GoFishView extends Application implements Observer {
 		a.getDialogPane().getButtonTypes().add(b4);
 		a.showAndWait().ifPresent(response -> {
 		    playerNum = Integer.valueOf(response.getText());
-		 });
+		});
 		
 		Alert a2 = new Alert(AlertType.NONE);
 		a2.setTitle("Would you like to battle AIs?");
@@ -76,6 +77,17 @@ public class GoFishView extends Application implements Observer {
 			}
 		 });
 		
+		Alert a3 = new Alert(AlertType.NONE);
+		a3.setTitle("What starting hand size would you like?");
+		ButtonType b5 = new ButtonType("5", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b5);
+		ButtonType b7 = new ButtonType("7", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b7);
+		ButtonType b9 = new ButtonType("9", ButtonData.OK_DONE);
+		a3.getDialogPane().getButtonTypes().add(b9);
+		a3.showAndWait().ifPresent(response -> {
+			startingHandSize = Integer.valueOf(response.getText());
+		 });
 		try {
 			root = FXMLLoader.load(getClass().getResource("mainScene2.fxml"));
 		} catch (IOException e1) {
@@ -87,7 +99,7 @@ public class GoFishView extends Application implements Observer {
 		stage.setScene(scene);
 		stage.show();
 		
-		model = new GoFishModel(playerNum, ais);
+		model = new GoFishModel(playerNum, ais, startingHandSize);
 		model.addObserver(this);
 		controller = new GoFishController(model);
 		controller.createDecks();
@@ -218,6 +230,16 @@ public class GoFishView extends Application implements Observer {
 				boolean[] hasRank = new boolean[2];
 				a.showAndWait().ifPresent(response -> {
 				    hasRank[0] = controller.makeGuess(response.getText(), playerNum[0]);
+				 // lets ai's track moves
+					for (GoFishPlayer p: controller.getPlayers()) {
+						if (p instanceof GoFishAi && p.getPlayerNumber() != whosturn) {
+							GoFishAi tempai = (GoFishAi) p;
+							tempai.addOpposingMove(response.getText(), whosturn);
+							if (hasRank[0]) {
+								tempai.removeOpposingMove(response.getText(), playerNum[0]);
+							}
+						}
+					}
 				 });
 				
 				TextFlow tf = (TextFlow) root.lookup("#textFlow");
@@ -292,8 +314,36 @@ private class SaveGameHandler implements EventHandler<ActionEvent> {
 		int whosturn = controller.getWhosTurn();
 		boolean hasRank;
 		
-		hasRank = controller.makeGuessAi(whosturn);
+		GoFishAi ai = (GoFishAi) controller.getPlayers()[whosturn];
+		int index = ai.checkOpposingCards();
+		int playerToAsk;
+		String rankAsked;
+		if (index != -1) {
+			playerToAsk = ai.getOpponentNum(index);
+			rankAsked = ai.getOpposingCard(index);
+			ai.removeOpposingCard(index);
+		} else {
+			ArrayList<Card> hand = ai.getHand();
+			Random rand = new Random();
+			do {
+			playerToAsk = rand.nextInt(controller.getNumberOfPlayers());
+			} while (playerToAsk == whosturn);
+			int  rand_int = rand.nextInt(hand.size());
+			rankAsked = hand.get(rand_int).getRank();
+		}
 		
+		hasRank = controller.makeGuess(rankAsked, playerToAsk);
+		
+		// lets ai's track moves
+		for (GoFishPlayer p: controller.getPlayers()) {
+			if (p instanceof GoFishAi && p.getPlayerNumber() != whosturn) {
+				GoFishAi tempai = (GoFishAi) p;
+				tempai.addOpposingMove(rankAsked, whosturn);
+				if (hasRank) {
+					tempai.removeOpposingMove(rankAsked, playerToAsk);
+				}
+			}
+		}
 		TextFlow tf = (TextFlow) root.lookup("#textFlow");
 		Text text1;
 		if (hasRank) {
@@ -311,13 +361,13 @@ private class SaveGameHandler implements EventHandler<ActionEvent> {
 
 
 			}else{
-				text1 = new Text("Player " + whosturn + " got a card");
+				text1 = new Text(" Got " + rankAsked + " from player " + (playerToAsk+1) + ".");
 				manageAiTurn();
 			}
 
 
 		} else {
-			text1 = new Text("Player " + whosturn + "'s turn is over. Click next turn!");
+			text1 = new Text("Player " + (whosturn+1) + "'s turn. Player " +(playerToAsk+1) + " didn't have " + rankAsked + ". Click next turn!");
 			Button nextTurn = (Button) root.lookup("#nextTurn");
 			nextTurn.setVisible(true);
 			controller.setTurnOver(true);
