@@ -1,8 +1,7 @@
 package view;
 
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 import controller.GoFishController;
 import javafx.application.Application;
@@ -30,6 +29,8 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import model.GoFishModel;
 import util.Card;
+import util.Deck;
+import util.GoFishPlayer;
 
 @SuppressWarnings({ "deprecation" })
 public class GoFishView extends Application implements Observer {
@@ -38,7 +39,7 @@ public class GoFishView extends Application implements Observer {
 	public GoFishModel model;
 	private Parent root;
 	private Integer playerNum;
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -125,6 +126,7 @@ public class GoFishView extends Application implements Observer {
 		Label cardsLeft = (Label) root.lookup("#cardsLeft");
 		String cardsLeftUpdate = controller.getCardsLeft();
 		cardsLeft.setText(cardsLeftUpdate);
+
 		
 	}
 	
@@ -158,7 +160,24 @@ public class GoFishView extends Application implements Observer {
 				TextFlow tf = (TextFlow) root.lookup("#textFlow");
 				Text text1;
 				if (hasRank[0]) {
-					text1 = new Text("Player has that rank. Adding to your hand. Ask again!");
+					// check if the gam
+					if(controller.isGameOver()){
+						// check number of books for every player.
+						GoFishPlayer winner = null;
+						for (int i = 0; i < controller.getNumberOfPlayers(); i++) {
+							if (controller.getPlayers()[i].getNumberOfBooks() > controller.getPlayers()[whosturn].getNumberOfBooks()) {
+								winner = controller.getPlayers()[i];
+							}
+						}
+
+						text1 = new Text("Game Over! " + winner.getName() + " wins!");
+
+
+					}else{
+						text1 = new Text("Player has that rank. Adding to your hand. Ask again!");
+					}
+
+
 				} else {
 					text1 = new Text("Player does not have that rank. Gone Fishing for you! Click next turn!");
 					Button nextTurn = (Button) root.lookup("#nextTurn");

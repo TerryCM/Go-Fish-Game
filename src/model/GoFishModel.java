@@ -24,7 +24,7 @@ import util.GameSave;
 
 
 @SuppressWarnings("deprecation")
-public class GoFishModel extends Observable{
+public class GoFishModel extends Observable {
 	/**
 	 * keep track of which players turn it is, start at 0.
 	 */
@@ -45,7 +45,7 @@ public class GoFishModel extends Observable{
 	 * deck of cards being used for the game
 	 */
 	private Deck deck;
-	
+
 	private boolean turnOver;
 
 	/**
@@ -58,12 +58,14 @@ public class GoFishModel extends Observable{
 		this.numberOfPlayers = numberOfPlayers;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
 		this.deck = new Deck();
+
+
 		//creating the players
-		for(int i = 0; i < numberOfPlayers; i++) {
+		for (int i = 0; i < numberOfPlayers; i++) {
 			players[i] = new GoFishPlayer(i);
 		}
 	}
-	
+
 	public void startGame() {
 		// assuming that number of players is >= 3
 		// drawn cards for each player
@@ -75,7 +77,7 @@ public class GoFishModel extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	/**
 	 * change who's turn it is
 	 */
@@ -85,23 +87,23 @@ public class GoFishModel extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	/**
 	 * returns which players turn it is, 0 being first player.
+	 *
 	 * @return int 0 - 3 depending on how many players there are present
 	 */
 	public int getWhosTurn() {
 		return this.whosTurn;
 	}
-	
 
-	
+
 	/**
 	 * method that controls a player asking for a card from another player
-	 * 
+	 * <p>
 	 * if the other player has a card with that rank, the card is taken from their hand
 	 * and given to another player.
-	 * 
+	 * <p>
 	 * returns true if the player had the card, and takes it.
 	 * false if the player did not have the card.
 	 */
@@ -124,20 +126,24 @@ public class GoFishModel extends Observable{
 
 		}
 	}
-	
-	
+
+
 	/**
 	 * return true if the game is over, false otherwise
+	 *
 	 * @return boolean if game is over
 	 */
-	public boolean isGameOver() {
-		return this.gameOver;
+	public boolean isGameOver(){
+		// the game is over if there are no cards left in the deck
+		return this.deck.size() == 0;
 	}
+
+
 
 	public void saveGame2() {
 
 		GameSave toSave = new GameSave(this.whosTurn, this.gameOver, this.players, this.deck);
-		
+
 		try {
 			FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
 			ObjectOutputStream o = new ObjectOutputStream(f);
@@ -155,12 +161,12 @@ public class GoFishModel extends Observable{
 			// Read objects
 			GameSave pr1 = (GameSave) oi.readObject();
 
-			
+
 			//System.out.println(this.handToString(pr1.getPlayers()[0].getHand()));
 
 			oi.close();
 			fi.close();
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found");
 		} catch (IOException e) {
@@ -169,7 +175,7 @@ public class GoFishModel extends Observable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * method to save a game in its current state
 	 */
@@ -192,9 +198,9 @@ public class GoFishModel extends Observable{
         saveGameFile.put("hands", test);
         // new file object
         File file = new File("saveGameFile.txt");
-  
+
         BufferedWriter bf = null;
-  
+
         try {
             bf = new BufferedWriter(new FileWriter(file));
             for (Map.Entry<String, String> entry :
@@ -215,7 +221,7 @@ public class GoFishModel extends Observable{
             }
         }
     }
-	
+
 	/**
 	 * method to load a game given a save game file.
 	 */
@@ -234,7 +240,7 @@ public class GoFishModel extends Observable{
 	public Deck getDeck() {
 		return deck;
 	}
-	
+
 	public String handToString(ArrayList<Card> toStr) {
 		String retval = "Deck: ";
 		for (Card card:toStr) {
@@ -247,7 +253,7 @@ public class GoFishModel extends Observable{
 		// TODO Auto-generated method stub
 		return handToString(this.players[this.whosTurn].getHand());
 	}
-	
+
 	public String getPlayerDeckCount(String location) {
 		int player = 0;
 		if (location.equals("right")) {
@@ -260,14 +266,14 @@ public class GoFishModel extends Observable{
 		int size = this.players[player].getHand().size();
 		return "Deck: " +size;
 	}
-	
+
 	public String getCardsLeft() {
 		return "Cards Left: " + Integer.toString(this.deck.size());
 	}
 
 	public ImageView[] getDeckImages() {
 		ImageView[] retval = new ImageView[players[whosTurn].getHand().size()];
-		
+
 		int leftOffset = 0;
 		int topOffset = 0;
 		int count = 0;
@@ -283,12 +289,12 @@ public class GoFishModel extends Observable{
 			} else {
 				leftOffset = 85*(Integer.parseInt(c.getRank())-1);
 			}
-			
+
 			if (c.getSuit().equals("Hearts")) {
 				topOffset = 0;
 			} else if (c.getSuit().equals("Diamonds")) {
 				topOffset = 119*2;
-							
+
 			} else if (c.getSuit().equals("Clubs")) {
 				topOffset = 119*3;
 			} else if (c.getSuit().equals("Spades")) {
@@ -301,10 +307,10 @@ public class GoFishModel extends Observable{
 			retval[count] = iv3;
 			count++;
 		}
-		
+
 		return retval;
 	}
-	
+
 
 	public boolean playerGoFish(String rankAsked) {
 		//draw random card from the shuffled deck
@@ -315,7 +321,7 @@ public class GoFishModel extends Observable{
 		notifyObservers();
 		return fishedCard.getRank().equals(rankAsked);
 	}
-	
+
 
 	public void setTurnOver(boolean b) {
 		// TODO Auto-generated method stub
@@ -331,6 +337,6 @@ public class GoFishModel extends Observable{
 		// TODO Auto-generated method stub
 		return this.numberOfPlayers;
 	}
-	
+
 }
 
