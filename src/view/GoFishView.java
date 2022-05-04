@@ -31,10 +31,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import model.GoFishModel;
-import util.Card;
-import util.Deck;
-import util.GoFishAi;
-import util.GoFishPlayer;
+import util.*;
 
 @SuppressWarnings({ "deprecation" })
 public class GoFishView extends Application implements Observer {
@@ -98,8 +95,11 @@ public class GoFishView extends Application implements Observer {
 		stage.resizableProperty().setValue(Boolean.FALSE);
 		stage.setScene(scene);
 		stage.show();
-		
-		model = new GoFishModel(playerNum, ais, startingHandSize);
+
+		// Replace this values with the ones retrieved from the user
+		boolean multiDeck = true;
+		int numDecks = 1;
+		model = new GoFishModel(playerNum, ais, multiDeck, numDecks, startingHandSize);
 		model.addObserver(this);
 		controller = new GoFishController(model);
 		controller.createDecks();

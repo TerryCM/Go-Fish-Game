@@ -58,4 +58,7 @@ public class Deck {
 		this.cards = newCards;
 	}
 
+    protected void addNewDeck(Deck newDeck) {
+        this.cards.addAll(newDeck.cards);
+    }
 }

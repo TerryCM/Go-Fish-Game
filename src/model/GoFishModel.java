@@ -21,11 +21,7 @@ import java.util.Observable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import util.GoFishPlayer;
-import util.Card;
-import util.Deck;
-import util.GameSave;
-import util.GoFishAi;
+import util.*;
 
 
 @SuppressWarnings("deprecation")
@@ -60,14 +56,18 @@ public class GoFishModel extends Observable {
 	/**
 	 * constructor for the model
 	 */
-	public GoFishModel(int numberOfPlayers, boolean ais, int startingHandSize) {
+	public GoFishModel(int numberOfPlayers, boolean ais, boolean multiDeck,
+					   int numberOfDecks, int startingHandSize) {
+
 		this.whosTurn = 0;
 		this.gameOver = false;
 		this.turnOver = false;
 		this.numberOfPlayers = numberOfPlayers;
 		this.startingHandSize = startingHandSize;
 		this.players = new GoFishPlayer[this.numberOfPlayers];
-		this.deck = new Deck();
+		this.deck = multiDeck ? new MultiDeck(numberOfDecks) : new Deck();
+
+
 
 
 		//creating the players
