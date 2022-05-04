@@ -1,9 +1,13 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.image.ImageView;
 import model.GoFishModel;
 import util.Card;
 import util.Deck;
+import util.GoFishAi;
 import util.GoFishPlayer;
 
 public class GoFishController {
@@ -35,6 +39,35 @@ public class GoFishController {
 		return true;
 	}
 
+	/**
+	 * The ai variant of make guess which does the heavy lifting here instead of in the view.
+	 * @param rankAsked
+	 * @param playerToAsk
+	 * @return true if the player has the card asked for and false otherwise
+	 */
+	public boolean makeGuessAi(int whosturn) {
+		GoFishAi ai = (GoFishAi) model.getPlayers()[whosturn];
+		int index = ai.checkOpposingCards();
+		int playerToAsk;
+		String rankAsked;
+		if (index != -1) {
+			playerToAsk = ai.getOpponentNum(index);
+			rankAsked = ai.getOpposingCard(index);
+		} else {
+			ArrayList<Card> hand = ai.getHand();
+			Random rand = new Random();
+			playerToAsk = rand.nextInt(model.getNumPlayers());
+			int  rand_int = rand.nextInt(hand.size());
+			rankAsked = hand.get(rand_int).getRank();
+		}
+		
+		if(!model.playerAskForCard(playerToAsk, rankAsked)) {
+				if(!playerGoFish(rankAsked)) {
+					return false;
+				}
+			}
+		return true;
+	}
 
 	/**
 	 * method to make the current player "go fish" from the deck.
