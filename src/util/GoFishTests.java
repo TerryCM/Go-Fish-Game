@@ -68,7 +68,7 @@ public class GoFishTests {
 	
 	@Test
 	void gameOverTest1() {
-		GoFishModel gameModel = new GoFishModel(2, false, false, 1, 26);
+		GoFishModel gameModel = new GoFishModel(2, true, false, 1, 26);
 		GoFishController game = new GoFishController(gameModel);
 		game.createDecks();
 		game.makeGuess("king", 1);
@@ -98,7 +98,8 @@ public class GoFishTests {
 		game.makeGuess("2", 0);
 		game.makeGuess("Ace", 0);
 		game.playerGoFish("1");
-		assertEquals(game.isGameOver(), true);
+		assertEquals(true, game.isGameOver());
+		game.getWinner();
 	}
 	
 	@Test
@@ -262,18 +263,31 @@ public class GoFishTests {
 	void removeOpposingMoveAiTest() {
 		GoFishAi a = new GoFishAi(0);
 		a.addOpposingMove("Spades", 1);
-		a.removeOpposingMove();
+		a.removeOpposingMove("Spades", 1);
 	}
 	
 	@Test
-	void addOpposingMoveAiTest() {
+	void removeRankTrackingTest() {
 		GoFishAi a = new GoFishAi(0);
-		a.addOpposingMove("Spades", 1);
+		a.addOpposingMove("2", 1);
+		a.addOpposingMove("2", 2);
+		a.removeRankTracking("2");
 	}
 	
 	@Test
-	void addOpposingMoveAiTest() {
+	void checkOpposingCardsAiTest() {
 		GoFishAi a = new GoFishAi(0);
 		a.addOpposingMove("Spades", 1);
+		Card card = new Card("Spades", "2");
+		a.addCard(card);
+		a.addOpposingMove("3", 1);
+		a.addOpposingMove("2", 2);
+		a.addOpposingMove("King", 1);
+		a.addOpposingMove("Ace", 2);
+		int index = a.checkOpposingCards();
+		a.getOpponentNum(index);
+		a.getOpposingCard(index);
+		a.removeOpposingCard(index);
+		a.checkOpposingCards();
 	}
 }
