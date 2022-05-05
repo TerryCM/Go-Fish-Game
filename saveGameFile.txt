@@ -1,7 +1,7 @@
 numberOfPlayers:4
-ai:true
-hands:King Clubs 7 Spades 2 Diamonds 6 Diamonds 10 Spades 7 Hearts , 4 Spades 3 Spades 6 Spades King Spades , Ace Spades 6 Hearts Ace Diamonds Jack Diamonds 3 Diamonds , 10 Clubs 5 Diamonds Jack Spades 10 Hearts 9 Clubs 5 Clubs 5 Spades 10 Diamonds Queen Hearts , 
-deck:8 Diamonds, 8 Spades, Queen Diamonds, Ace Clubs, Queen Clubs, 6 Clubs, 4 Clubs, 2 Spades, 9 Diamonds, 9 Spades, King Diamonds, Jack Clubs, 4 Hearts, King Hearts, 2 Hearts, 8 Hearts, 8 Clubs, Jack Hearts, 5 Hearts, 7 Diamonds, 4 Diamonds, 3 Hearts, Queen Spades, 9 Hearts, 7 Clubs, 3 Clubs, 2 Clubs, Ace Hearts, 
+aisTrack:3 0 3 0 Jack 2 7 3 3 0 4 2 Jack 2 7 3 3 0 King 2 5 3 5 3 3 0 Ace 2 Queen 2 4 2 10 3 7 3 10 3 , 3 0 3 0 9 1 7 3 3 0 7 3 3 0 5 3 5 3 3 0 10 3 7 3 10 3 , 3 0 3 0 9 1 Jack 2 3 0 4 2 Jack 2 3 0 King 2 3 0 Ace 2 Queen 2 4 2 , 
+hands:3 Spades 3 Clubs 3 Diamonds 2 Diamonds 9 Diamonds 4 Spades 8 Diamonds , 9 Hearts 8 Clubs 6 Clubs 8 Spades 4 Hearts , 4 Clubs Jack Diamonds Jack Spades 4 Diamonds Queen Spades Queen Diamonds 6 Hearts , 5 Hearts 2 Spades 7 Clubs 5 Spades 5 Diamonds 10 Clubs 10 Diamonds 10 Hearts 7 Diamonds 7 Hearts 6 Spades , 
+deck:2 Clubs, 8 Hearts, 9 Spades, 2 Hearts, Queen Clubs, 9 Clubs, 6 Diamonds, 3 Hearts, 7 Spades, 10 Spades, Queen Hearts, Jack Hearts, King Diamonds, 5 Clubs, Jack Clubs, 
 whosTurn:0
+ais:true
 gameOver:false
-tracked king 2 gueen 3 2 2, Ace 1,

@@ -67,4 +67,22 @@ public class GoFishAi extends GoFishPlayer {
     	opponentsNum.remove(index);
     	opponentsRanks.remove(index);
     }
+    
+    public ArrayList<String> getOpponentsRanks() {
+    	return this.opponentsRanks;
+    }
+    
+    public ArrayList<Integer> getOpponentsNums() {
+    	return this.opponentsNum;
+    }
+    
+    public String getTrackedCards() {
+    	String retval = "";
+    	for (int i = 0; i < getOpponentsRanks().size(); i++) {
+    		retval += this.opponentsRanks.get(i) + " " + Integer.toString(this.opponentsNum.get(i)) + " ";
+    	}
+    	return retval;
+    }
+    
+    
 }

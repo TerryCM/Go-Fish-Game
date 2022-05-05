@@ -46,6 +46,7 @@ public class GoFishModel extends Observable {
 	private Deck deck;
 
 	private boolean turnOver;
+	private boolean ais;
 
 	/**
 	 * constructor for the model
@@ -54,6 +55,7 @@ public class GoFishModel extends Observable {
 					   int numberOfDecks, int startingHandSize) {
 
 		this.whosTurn = 0;
+		this.ais = ais;
 		this.gameOver = false;
 		this.turnOver = false;
 		this.numberOfPlayers = numberOfPlayers;
@@ -175,16 +177,23 @@ public class GoFishModel extends Observable {
         saveGameFile.put("numberOfPlayers", Integer.toString(this.numberOfPlayers));
         //card ranks delimited by spaces
         saveGameFile.put("deck", this.deck.toStringDeck());
+        saveGameFile.put("ais", String.valueOf(this.ais));
         //card ranks delimited by spaces, each player is their own line in the string.
         //player 1 = line 1 of string, player 2 = line 2 of string, etc.
         saveGameFile.put("hands", "");
         //loop through all current players
         String test = "";
+        String ais = "";
         for (int i = 0; i < this.numberOfPlayers; i++) {
             //save the player's hand by concatenating the cards ranks followed by a new line
             test += this.players[i].toStringHand() + ", ";
+            if (this.players[i] instanceof GoFishAi) {
+            	GoFishAi p = (GoFishAi) this.players[i];
+            	ais += p.getTrackedCards() + ", ";
+            }
         }
         saveGameFile.put("hands", test);
+        saveGameFile.put("aisTrack", ais);
         // new file object
         File file = new File("saveGameFile.txt");
 
@@ -220,6 +229,7 @@ public class GoFishModel extends Observable {
 		this.whosTurn = Integer.parseInt(gameFile.get("whosTurn"));
         this.gameOver = Boolean.parseBoolean(gameFile.get("gameOver"));
         this.numberOfPlayers = Integer.parseInt(gameFile.get("numberOfPlayers"));
+        this.ais = Boolean.parseBoolean(gameFile.get("ais"));
         this.players = new GoFishPlayer[this.numberOfPlayers];
 		
 		ArrayList<String> hands = new ArrayList<String>(Arrays.asList(gameFile.get("hands").split(",")));
@@ -239,6 +249,26 @@ public class GoFishModel extends Observable {
 				j += 2;
 			}
 			count += 1;
+		}
+		
+		if (this.ais) {
+			count = 1;
+			ArrayList<String> trackedCards = new ArrayList<String>(Arrays.asList(gameFile.get("aisTrack").split(",")));
+			while (count < 4) {
+				GoFishAi newAi = new GoFishAi(count);
+				players[count] = newAi;
+				ArrayList<String> trackedcards = new ArrayList<String>(Arrays.asList(trackedCards.get(count - 1).split(" ")));
+				trackedcards.remove("");
+				int i = 0;
+				int j = 1;
+				while (j < trackedcards.size()) {
+					newAi.addOpposingMove(trackedcards.get(i), Integer.valueOf(trackedcards.get(j)));
+					i += 2;
+					j += 2;
+				}
+				count += 1;
+				
+			}
 		}
 		
 		this.deck = new Deck();
