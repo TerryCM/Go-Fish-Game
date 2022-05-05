@@ -2,13 +2,9 @@ package util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.awt.Point;
-
 import org.junit.jupiter.api.Test;
 
 import controller.GoFishController;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import model.GoFishModel;
 
 

@@ -1,13 +1,9 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.Random;
 
 import javafx.scene.image.ImageView;
 import model.GoFishModel;
-import util.Card;
 import util.Deck;
-import util.GoFishAi;
 import util.GoFishPlayer;
 
 public class GoFishController {
