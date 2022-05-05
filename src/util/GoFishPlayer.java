@@ -8,10 +8,10 @@ public class GoFishPlayer {
      * create a player with a player number and an empty hand
      */
     private final int playerNumber;
-    private int numberOfBooks;
     private final ArrayList<Card> hand;
     private final String name;
-    private HashMap<String, Integer> book;
+    private final HashMap<String, Integer> book;
+    private int numberOfBooks;
 
     public GoFishPlayer(int playerNumber) {
         this.playerNumber = playerNumber;
@@ -28,11 +28,17 @@ public class GoFishPlayer {
         this.name = name;
         this.book = new HashMap<String, Integer>();
     }
-    
-    public HashMap<String,Integer> getBooks() {
-    	return this.book;
+
+    /**
+     * @return a HasMap of the books the player has in the form of <rank, number>
+     */
+    public HashMap<String, Integer> getBooks() {
+        return this.book;
     }
 
+    /**
+     * @return a String, representing the name  of the player
+     */
     public String getName() {
         return this.name;
     }
@@ -65,7 +71,7 @@ public class GoFishPlayer {
             }
         } else {
             book.put(card.getRank(), 1);
-        } 
+        }
     }
 
     public int getNumberOfBooks() {
@@ -89,7 +95,7 @@ public class GoFishPlayer {
     }
 
     /**
-     * @param card the card to check for
+     * @param rank, the rank of the card to check
      * @return if a person has a certain card rank or not
      */
     public boolean hasCard(String rank) {
@@ -110,10 +116,16 @@ public class GoFishPlayer {
         return hand.remove(index);
     }
 
+    /**
+     * @return an ArrayList of the player's hand
+     */
     public ArrayList<Card> getHand() {
         return this.hand;
     }
 
+    /**
+     * @return a String representation of the player's hand
+     */
     public String toStringHand() {
         String handString = "";
         for (Card c : hand) {

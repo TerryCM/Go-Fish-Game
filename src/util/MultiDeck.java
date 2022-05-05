@@ -2,6 +2,7 @@ package util;
 
 public class MultiDeck extends Deck {
     private final int numDecks;
+
     public MultiDeck(int numDecks) {
         super();
         this.numDecks = numDecks;
@@ -9,6 +10,10 @@ public class MultiDeck extends Deck {
             super.addNewDeck(new Deck());
         }
     }
+
+    /**
+     * @return The number of decks.
+     */
     public int getNumDecks() {
         return numDecks;
     }

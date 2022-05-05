@@ -1,26 +1,38 @@
 package util;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Client {
 
-    
-    private Socket socket;
+
+    private final Socket socket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private String playerNum;
+    private final String playerNum;
 
     public Client(Socket socket, String num) {
-    	this.socket = socket;
+        this.socket = socket;
         this.playerNum = num;
         try {
-        	this.output = new ObjectOutputStream(socket.getOutputStream());
-        	this.output.flush();
+            this.output = new ObjectOutputStream(socket.getOutputStream());
+            this.output.flush();
             this.input = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             closeEverything(socket, input, output);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        Socket socket = new Socket("localhost", 4000);
+
+        Client client = new Client(socket, "1");
+
+        client.listenForMessage();
+        client.sendMessage();
     }
 
     public void sendMessage() {
@@ -65,16 +77,5 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static void main(String[] args) throws IOException {
-
-        Socket socket = new Socket("localhost", 4000);
-
-        Client client = new Client(socket, "1");
-       
-        client.listenForMessage();
-        client.sendMessage();
     }
 }

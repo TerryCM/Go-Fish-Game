@@ -4,20 +4,20 @@ import java.io.Serializable;
 
 public class GameSave implements Serializable {
 
-	private int whosTurn;
-	private boolean gameOver;
-	private GoFishPlayer[] players;
-	private Deck deck;
-	
-	public GameSave(int whosTurn, boolean gameOver, GoFishPlayer[] players, Deck deck) {
-		// TODO Auto-generated constructor stub
-		this.whosTurn = whosTurn;
-		this.gameOver = gameOver;
-		this.players = players;
-		this.deck = deck;
-	}
+    private final int whosTurn;
+    private final boolean gameOver;
+    private final GoFishPlayer[] players;
+    private final Deck deck;
 
-	public GoFishPlayer[] getPlayers() {
-		return this.players;
-	}
+    public GameSave(int whosTurn, boolean gameOver, GoFishPlayer[] players, Deck deck) {
+        // TODO Auto-generated constructor stub
+        this.whosTurn = whosTurn;
+        this.gameOver = gameOver;
+        this.players = players;
+        this.deck = deck;
+    }
+
+    public GoFishPlayer[] getPlayers() {
+        return this.players;
+    }
 }

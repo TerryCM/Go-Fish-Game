@@ -8,123 +8,199 @@ import util.GoFishPlayer;
 
 public class GoFishController {
 
-	private GoFishModel model;
+    private final GoFishModel model;
 
-	/**
-	 * Constructor for GoFishController
-	 * @param model
-	 */
+    /**
+     * Constructor for GoFishController
+     *
+     * @param model
+     */
 
-	// consider making the controller a singleton
-	public GoFishController(GoFishModel model) {
-		this.model = model;
-	}
+    // consider making the controller a singleton
+    public GoFishController(GoFishModel model) {
+        this.model = model;
+    }
 
-	/**
-	 *
-	 * @param rankAsked
-	 * @param playerToAsk
-	 * @return true if the player has the card asked for and false otherwise
-	 */
-	public boolean makeGuess(String rankAsked, int playerToAsk) {
-		if(!model.playerAskForCard(playerToAsk, rankAsked)) {
-				if(!playerGoFish(rankAsked)) {
-					return false;
-				}
-			}
-		return true;
-	}
+    /**
+     * @param rankAsked
+     * @param playerToAsk
+     * @return true if the player has the card asked for and false otherwise
+     */
+    public boolean makeGuess(String rankAsked, int playerToAsk) {
+        if (!model.playerAskForCard(playerToAsk, rankAsked)) {
+			return playerGoFish(rankAsked);
+        }
+        return true;
+    }
 
-	/**
-	 * method to make the current player "go fish" from the deck.
-	 *
-	 * this occurs if a player asks for a card and the player being asked
-	 * does not have any of that cards rank.
-	 *
-	 * player pulls a random card from the deck and brings it to their hand
-	 */
-	public boolean playerGoFish(String rankAsked) {
-		return model.playerGoFish(rankAsked);
-	}
+    /**
+     * method to make the current player "go fish" from the deck.
+     * <p>
+     * this occurs if a player asks for a card and the player being asked
+     * does not have any of that cards rank.
+     * <p>
+     * player pulls a random card from the deck and brings it to their hand
+     */
+    public boolean playerGoFish(String rankAsked) {
+        return model.playerGoFish(rankAsked);
+    }
 
-	public void createDecks() {
-		model.startGame();
-	}
-	public GoFishPlayer[] getPlayers() {
-		return model.getPlayers();
-	}
-	
-	public int getWhosTurn() {
-		return model.getWhosTurn();
-	}
-	
-	public Deck getDeck() {
-		return model.getDeck();
-	}
+    /**
+     * Create Decks for the game
+     */
+    public void createDecks() {
+        model.startGame();
+    }
 
-	public boolean isGameOver() {
-		return model.isGameOver();
-	}
+    /**
+     * Return the players
+     *
+     * @return GoFishPlayer objects
+     */
+    public GoFishPlayer[] getPlayers() {
+        return model.getPlayers();
+    }
 
-	public String getOurCurrentHand() {
-		// TODO Auto-generated method stub
-		return model.getOurCurrentHand();
-	}
-	
-	public String getPlayerDeckCount(String i) {
-		return model.getPlayerDeckCount(i);
-	}
+    /**
+     * Return whose turn it is
+     *
+     * @return int representing the player's turn
+     */
+    public int getWhosTurn() {
+        return model.getWhosTurn();
+    }
 
-	public String getCardsLeft() {
-		// TODO Auto-generated method stub
-		return model.getCardsLeft();
-	}
+    /**
+     * Return the deck
+     *
+     * @return Deck object
+     */
+    public Deck getDeck() {
+        return model.getDeck();
+    }
 
-	public void saveGame() {
-		// TODO Auto-generated method stub
-		model.saveGame();
-	}
-	
-	public ImageView[] getDeckImages() {
-		return model.getDeckImages();
-	}
+    /**
+     * Return the game over boolean
+     *
+     * @return boolean representing if the game is over
+     */
+    public boolean isGameOver() {
+        return model.isGameOver();
+    }
 
-	public void setTurnOver(boolean b) {
-		// TODO Auto-generated method stub
-		model.setTurnOver(b);
-	}
-	
-	public boolean isTurnOver() {
-		return model.isTurnOver();
-	}
+    /**
+     * Return the current player's hand
+     *
+     * @return A String reperesenting the current player's hand
+     */
+    public String getOurCurrentHand() {
+        // TODO Auto-generated method stub
+        return model.getOurCurrentHand();
+    }
 
-	public int getNumberOfPlayers() {
-		// TODO Auto-generated method stub
-		return model.getNumPlayers();
-	}
+    /**
+     * Return the current player deck count
+     *
+     * @param i the player's index
+     * @return int representing the current player's deck count
+     */
+    public String getPlayerDeckCount(String i) {
+        return model.getPlayerDeckCount(i);
+    }
 
-	public void changeTurn() {
-		model.changeTurn();
-	}
+    /**
+     * @return a String, representing the cards on the left hand
+     */
+    public String getCardsLeft() {
+        // TODO Auto-generated method stub
+        return model.getCardsLeft();
+    }
 
-	public String getPlayerBookCount(String string) {
-		// TODO Auto-generated method stub
-		return model.getPlayerBookCount(string);
-	}
+    /**
+     * Saves the game.
+     */
+    public void saveGame() {
+        // TODO Auto-generated method stub
+        model.saveGame();
+    }
 
-	public String getPlayerName(String string) {
-		// TODO Auto-generated method stub
-		return model.getPlayerName(string);
-	}
+    /**
+     * Get Deck Images
+     *
+     * @return a ImageView array
+     */
+    public ImageView[] getDeckImages() {
+        return model.getDeckImages();
+    }
 
-	public void loadGame() {
-		// TODO Auto-generated method stub
-		model.loadGame();
-	}
+    /**
+     * @return true if the turn is over, false otherwise
+     */
+    public boolean isTurnOver() {
+        return model.isTurnOver();
+    }
 
-	public String getWinner() {
-		// TODO Auto-generated method stub
-		return model.getWinner();
-	}
+    /**
+     * Set the turns over
+     *
+     * @param b boolean representing if the game is over
+     */
+    public void setTurnOver(boolean b) {
+        // TODO Auto-generated method stub
+        model.setTurnOver(b);
+    }
+
+    /**
+     * @return the number of pla
+     */
+    public int getNumberOfPlayers() {
+        // TODO Auto-generated method stub
+        return model.getNumPlayers();
+    }
+
+    /**
+     * Changes the turn
+     */
+    public void changeTurn() {
+        model.changeTurn();
+    }
+
+    /**
+     * Get players book count
+     *
+     * @param string, representing the player's index
+     * @return the player's book count
+     */
+    public String getPlayerBookCount(String string) {
+        // TODO Auto-generated method stub
+        return model.getPlayerBookCount(string);
+    }
+
+    /**
+     * Return player name.
+     *
+     * @param string, representing the player's index
+     * @return the player's name
+     */
+    public String getPlayerName(String string) {
+        // TODO Auto-generated method stub
+        return model.getPlayerName(string);
+    }
+
+    /**
+     * Loads the game.
+     */
+    public void loadGame() {
+        // TODO Auto-generated method stub
+        model.loadGame();
+    }
+
+    /**
+     * @return a String representing the winner
+     */
+    public String getWinner() {
+        // TODO Auto-generated method stub
+        return model.getWinner();
+    }
 
 }

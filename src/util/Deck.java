@@ -7,7 +7,7 @@ public class Deck {
     /**
      * create a deck of cards using the Card class
      */
-     
+
     private ArrayList<Card> cards;
 
     public Deck() {
@@ -30,16 +30,19 @@ public class Deck {
     public int size() {
         return cards.size();
     }
-    
-    
-	/**
+
+
+    /**
      * @return a random card from the deck
      */
     public Card draw() {
         int index = (int) (Math.random() * cards.size());
         return cards.remove(index);
     }
-    
+
+    /**
+     * @return a String representation of the deck
+     */
     public String toStringDeck() {
         String listString = "";
         for (Card c : this.cards) {
@@ -48,10 +51,16 @@ public class Deck {
         return listString;
     }
 
-	public void replaceDeck(ArrayList<Card> newCards) {
-		this.cards = newCards;
-	}
+    /**
+     * @param newCards, an ArrayList of cards to replace the deck with
+     */
+    public void replaceDeck(ArrayList<Card> newCards) {
+        this.cards = newCards;
+    }
 
+    /**
+     * @param newDeck, an ArrayList of cards to add to the deck
+     */
     protected void addNewDeck(Deck newDeck) {
         this.cards.addAll(newDeck.cards);
     }

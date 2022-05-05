@@ -1,0 +1,191 @@
+@startuml
+class util.GameSave {
+- int whosTurn
+- boolean gameOver
+- GoFishPlayer[] players
+- Deck deck
++ GoFishPlayer[] getPlayers()
+}
+class util.GoFishPlayer {
+- int playerNumber
+- int numberOfBooks
+- ArrayList<Card> hand
+- String name
+- HashMap<String,Integer> book
++ HashMap<String,Integer> getBooks()
++ String getName()
++ int getPlayerNumber()
++ int handSize()
++ void addCard(Card)
++ int getNumberOfBooks()
++ ArrayList<Card> removeCards(String)
++ boolean hasCard(String)
++ Card draw()
++ ArrayList<Card> getHand()
++ String toStringHand()
+}
+class util.Server {
+- ServerSocket serverSocket
+- {static} ArrayList<ClientHandler> clients
+- ExecutorService pool
++ void createServer()
++ void closeServerSocket()
++ {static} void main(String[])
+}
+class util.GoFishTests {
+~ void test()
+}
+class util.GoFishAi {
+- ArrayList<String> opponentsRanks
+- ArrayList<Integer> opponentsNum
++ void addOpposingMove(String,Integer)
++ void removeOpposingMove(String,Integer)
++ void removeRankTracking(String)
++ int checkOpposingCards()
++ Integer getOpponentNum(int)
++ String getOpposingCard(int)
++ void removeOpposingCard(int)
+}
+class view.GoFish {
++ {static} void main(String[])
+}
+class model.GoFishModel {
+- int whosTurn
+- boolean gameOver
+- GoFishPlayer[] players
+- int numberOfPlayers
+- int startingHandSize
+- Deck deck
+- boolean turnOver
++ void startGame()
++ void changeTurn()
++ int getWhosTurn()
++ boolean playerAskForCard(int,String)
++ boolean isGameOver()
++ void saveGame()
++ void loadGame()
++ {static} Map<String,String> HashMapFromTextFile()
++ GoFishPlayer[] getPlayers()
++ Deck getDeck()
++ String handToString(ArrayList<Card>)
++ String getOurCurrentHand()
++ String getPlayerDeckCount(String)
++ String getPlayerName(String)
++ String getPlayerBookCount(String)
++ String getCardsLeft()
++ ImageView[] getDeckImages()
++ boolean playerGoFish(String)
++ void setTurnOver(boolean)
++ boolean isTurnOver()
++ int getNumPlayers()
+}
+class util.Card {
+- String suit
+- String rank
++ String getSuit()
++ String getRank()
++ String toString()
++ boolean equalsOnRank(Card)
+}
+class controller.GoFishController {
+- GoFishModel model
++ boolean makeGuess(String,int)
++ boolean playerGoFish(String)
++ void createDecks()
++ GoFishPlayer[] getPlayers()
++ int getWhosTurn()
++ Deck getDeck()
++ boolean isGameOver()
++ String getOurCurrentHand()
++ String getPlayerDeckCount(String)
++ String getCardsLeft()
++ void saveGame()
++ ImageView[] getDeckImages()
++ void setTurnOver(boolean)
++ boolean isTurnOver()
++ int getNumberOfPlayers()
++ void changeTurn()
++ String getPlayerBookCount(String)
++ String getPlayerName(String)
++ void loadGame()
+}
+class util.Deck {
+- ArrayList<Card> cards
++ int size()
++ Card draw()
++ String toStringDeck()
++ void removeCards(ArrayList<String>)
++ void replaceDeck(ArrayList<Card>)
+# void addNewDeck(Deck)
+}
+class util.MultiDeck {
+- int numDecks
++ int getNumDecks()
+}
+class util.Message {
+- String message
++ String toString()
+}
+class util.ClientHandler {
+- Socket socket
+- ObjectInputStream input
+- ObjectOutputStream output
+- int playerNumber
++ void run()
++ void sendToServer(Message)
++ void closeEverything(Socket,ObjectInputStream,ObjectOutputStream)
+}
+class util.Client {
+- Socket socket
+- ObjectInputStream input
+- ObjectOutputStream output
+- String playerNum
++ void sendMessage()
++ void listenForMessage()
++ void closeEverything(Socket,ObjectInputStream,ObjectOutputStream)
++ {static} void main(String[])
+}
+class view.GoFishView {
+- GoFishController controller
++ GoFishModel model
+- Parent root
+- Integer playerNum
+- boolean ais
+- int startingHandSize
+- int numDecks
++ {static} void main(String[])
++ void start(Stage)
++ void update(Observable,Object)
++ void manageAiTurn()
+}
+class view.GoFishView.ButtonClickHandler {
++ void handle(MouseEvent)
+}
+class view.GoFishView.NextTurnButtonClickHandler {
++ void handle(MouseEvent)
+}
+class view.GoFishView.LoadGameHandler {
++ void handle(ActionEvent)
+}
+class view.GoFishView.SaveGameHandler {
++ void handle(ActionEvent)
+}
+
+
+java.io.Serializable <|.. util.GameSave
+util.GoFishPlayer <|-- util.GoFishAi
+java.util.Observable <|-- model.GoFishModel
+util.Deck <|-- util.MultiDeck
+java.io.Serializable <|.. util.Message
+util.Runnable <|.. util.ClientHandler
+view.Observer <|.. view.GoFishView
+javafx.application.Application <|-- view.GoFishView
+view.GoFishView +.. view.GoFishView.ButtonClickHandler
+view.EventHandler <|.. view.GoFishView.ButtonClickHandler
+view.GoFishView +.. view.GoFishView.NextTurnButtonClickHandler
+view.EventHandler <|.. view.GoFishView.NextTurnButtonClickHandler
+view.GoFishView +.. view.GoFishView.LoadGameHandler
+view.EventHandler <|.. view.GoFishView.LoadGameHandler
+view.GoFishView +.. view.GoFishView.SaveGameHandler
+view.EventHandler <|.. view.GoFishView.SaveGameHandler
+@enduml

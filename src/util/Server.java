@@ -1,6 +1,6 @@
 package util;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,16 +8,22 @@ import java.util.ArrayList;
 public class Server {
 
     private final ServerSocket serverSocket;
-    private ArrayList<Thread> clients; 
+    private final ArrayList<Thread> clients;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.clients = new ArrayList<Thread>();
     }
 
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(4000);
+        Server server = new Server(serverSocket);
+        server.createServer();
+    }
+
     public void createServer() {
         try {
-            
+
             while (!serverSocket.isClosed() && clients.size() < 2) {
                 // Will be closed in the Client Handler.
                 Socket socket = serverSocket.accept();
@@ -33,7 +39,6 @@ public class Server {
         }
     }
 
-
     public void closeServerSocket() {
         try {
             if (serverSocket != null) {
@@ -42,12 +47,6 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(4000);
-        Server server = new Server(serverSocket);
-        server.createServer();
     }
 
 }
