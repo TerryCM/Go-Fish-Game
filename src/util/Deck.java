@@ -48,12 +48,6 @@ public class Deck {
         return listString;
     }
 
-	public void removeCards(ArrayList<String> cards) {
-		// TODO Auto-generated method stub
-		
-		
-	}
-
 	public void replaceDeck(ArrayList<Card> newCards) {
 		this.cards = newCards;
 	}
