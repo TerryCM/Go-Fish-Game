@@ -61,6 +61,7 @@ public class GoFishPlayer {
             book.put(card.getRank(), book.get(card.getRank()) + 1);
             if (book.get(card.getRank()) == 4) {
                 numberOfBooks++;
+                removeCards(card.getRank());
             }
         } else {
             book.put(card.getRank(), 1);

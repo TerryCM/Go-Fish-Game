@@ -126,4 +126,9 @@ public class GoFishController {
 		model.loadGame();
 	}
 
+	public String getWinner() {
+		// TODO Auto-generated method stub
+		return model.getWinner();
+	}
+
 }

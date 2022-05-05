@@ -3,18 +3,12 @@ package model;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 
@@ -323,6 +317,18 @@ public class GoFishModel extends Observable {
 
 	public Deck getDeck() {
 		return deck;
+	}
+	
+	public String getWinner() {
+		String retval = "";
+		int count = 0;
+		for (int i = 0; i < this.players.length; i++) {
+			if (players[i].getNumberOfBooks() > count) {
+				count = players[i].getNumberOfBooks();
+				retval = "Game Over! Player " +Integer.toString(i)+" wins!";
+			};
+		}
+		return retval;
 	}
 
 	public String handToString(ArrayList<Card> toStr) {

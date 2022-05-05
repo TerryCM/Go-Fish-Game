@@ -271,17 +271,23 @@ public class GoFishView extends Application implements Observer {
 					// check if the gam
 					if(controller.isGameOver()){
 						// check number of books for every player.
-						GoFishPlayer winner = null;
-						for (int i = 0; i < controller.getNumberOfPlayers(); i++) {
-							if (controller.getPlayers()[i].getNumberOfBooks() > controller.getPlayers()[whosturn].getNumberOfBooks()) {
-								winner = controller.getPlayers()[i];
-							}
-						}
 
-						text1 = new Text("Game Over! " + winner.getName() + " wins!");
+						text1 = new Text(controller.getWinner());
+						
+						Button leftAsk = (Button) root.lookup("#askLeft");
+						leftAsk.setVisible(false);
+						
+						Button rightAsk = (Button) root.lookup("#askRight");
+						rightAsk.setVisible(false);
+						
+						Button topAsk = (Button) root.lookup("#askTop");
+						topAsk.setVisible(false);
+						
+						Button nextTurn = (Button) root.lookup("#nextTurn");
+						nextTurn.setVisible(false);
 
 
-					}else{
+					} else{
 						text1 = new Text("Player has that rank. Adding to your hand. Ask again!");
 					}
 
@@ -292,7 +298,7 @@ public class GoFishView extends Application implements Observer {
 					nextTurn.setVisible(true);
 					controller.setTurnOver(true);
 				}
-			    text1.setFill(Color.RED);
+			    text1.setFill(Color.WHITE);
 			    text1.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
 			    tf.getChildren().add(text1);
 				
@@ -351,8 +357,13 @@ private class SaveGameHandler implements EventHandler<ActionEvent> {
 			do {
 			playerToAsk = rand.nextInt(controller.getNumberOfPlayers());
 			} while (playerToAsk == whosturn);
-			int  rand_int = rand.nextInt(hand.size());
-			rankAsked = hand.get(rand_int).getRank();
+			if (hand.size() == 0) {
+				rankAsked = "Test";
+			} else {
+				int  rand_int = rand.nextInt(hand.size());
+				rankAsked = hand.get(rand_int).getRank();
+			}
+			
 		}
 		
 		hasRank = controller.makeGuess(rankAsked, playerToAsk);
@@ -373,14 +384,19 @@ private class SaveGameHandler implements EventHandler<ActionEvent> {
 			// check if the game is over
 			if(controller.isGameOver()){
 				// check number of books for every player.
-				GoFishPlayer winner = null;
-				for (int i = 0; i < controller.getNumberOfPlayers(); i++) {
-					if (controller.getPlayers()[i].getNumberOfBooks() > controller.getPlayers()[whosturn].getNumberOfBooks()) {
-						winner = controller.getPlayers()[i];
-					}
-				}
-
-				text1 = new Text("Game Over! " + winner.getName() + " wins!");
+				text1 = new Text(controller.getWinner());
+				
+				Button leftAsk = (Button) root.lookup("#askLeft");
+				leftAsk.setVisible(false);
+				
+				Button rightAsk = (Button) root.lookup("#askRight");
+				rightAsk.setVisible(false);
+				
+				Button topAsk = (Button) root.lookup("#askTop");
+				topAsk.setVisible(false);
+				
+				Button nextTurn = (Button) root.lookup("#nextTurn");
+				nextTurn.setVisible(false);
 
 
 			}else{
@@ -395,7 +411,7 @@ private class SaveGameHandler implements EventHandler<ActionEvent> {
 			nextTurn.setVisible(true);
 			controller.setTurnOver(true);
 		}
-	    text1.setFill(Color.RED);
+	    text1.setFill(Color.WHITE);
 	    text1.setFont(Font.font("Helvetica", FontWeight.BOLD, 12));
 	    tf.getChildren().add(text1);
 	}
