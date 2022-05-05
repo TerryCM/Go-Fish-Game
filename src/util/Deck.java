@@ -30,12 +30,29 @@ public class Deck {
     public int size() {
         return cards.size();
     }
-
-    /**
+    
+    
+	/**
      * @return a random card from the deck
      */
     public Card draw() {
         int index = (int) (Math.random() * cards.size());
         return cards.remove(index);
+    }
+    
+    public String toStringDeck() {
+        String listString = "";
+        for (Card c : this.cards) {
+            listString += c.getRank() + " " + c.getSuit() + ", ";
+        }
+        return listString;
+    }
+
+	public void replaceDeck(ArrayList<Card> newCards) {
+		this.cards = newCards;
+	}
+
+    protected void addNewDeck(Deck newDeck) {
+        this.cards.addAll(newDeck.cards);
     }
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" styleClass="anchor" stylesheets="@anchor.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="284.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../util/backcard.png" />
+         </image>
+      </ImageView>
+      <Label id="topName" layoutX="308.0" layoutY="68.0" prefHeight="25.0" prefWidth="55.0" text="Player 3">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="ourName" layoutX="236.0" layoutY="371.0" prefHeight="25.0" prefWidth="55.0" text="Player 1">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="leftName" layoutX="219.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Player 2">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="topPlayerStack" layoutX="353.0" layoutY="33.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="ourStack" layoutX="21.0" layoutY="410.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="leftPlayerStack" layoutX="159.0" layoutY="187.0" prefHeight="25.0" prefWidth="55.0" text="Stack: 0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="topPlayerDeck" layoutX="236.0" layoutY="33.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="96.0" text="Deck: ">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="ourDeck" layoutX="32.0" layoutY="371.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="195.0" text="Deck: " visible="false">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label id="leftPlayerDeck" layoutX="159.0" layoutY="212.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="59.0" text="Deck: ">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Button id="askTop" layoutX="318.0" layoutY="94.0" mnemonicParsing="false" text="Ask" />
+      <Button id="askLeft" fx:id="leftAsk" layoutX="218.0" layoutY="212.0" mnemonicParsing="false" text="Ask" />
+      <Button id="nextTurn" layoutX="301.0" layoutY="302.0" mnemonicParsing="false" text="Next Turn" visible="false" />
+      <Label id="cardsLeft" layoutX="301.0" layoutY="275.0" text="Cards Left:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <HBox id="ourHbox" layoutX="123.0" layoutY="397.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="510.0" />
+      <MenuBar id="menuBar" layoutY="-3.0" prefHeight="25.0" prefWidth="650.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Go Fish">
+            <items>
+              <MenuItem id="loadGame" mnemonicParsing="false" text="Load game..." />
+                  <MenuItem mnemonicParsing="false" text="Save game" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TextFlow id="textFlow" layoutX="14.0" layoutY="33.0" prefHeight="137.0" prefWidth="207.0" />
+   </children>
+</AnchorPane>

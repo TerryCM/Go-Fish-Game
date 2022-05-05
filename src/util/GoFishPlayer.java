@@ -1,17 +1,40 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GoFishPlayer {
     /**
      * create a player with a player number and an empty hand
      */
-    private int playerNumber;
-    private ArrayList<Card> hand;
+    private final int playerNumber;
+    private int numberOfBooks;
+    private final ArrayList<Card> hand;
+    private final String name;
+    private HashMap<String, Integer> book;
 
     public GoFishPlayer(int playerNumber) {
         this.playerNumber = playerNumber;
         hand = new ArrayList<Card>();
+        numberOfBooks = 0;
+        this.name = "Player " + playerNumber;
+        this.book = new HashMap<String, Integer>();
+    }
+
+    public GoFishPlayer(int playerNumber, String name) {
+        this.playerNumber = playerNumber;
+        hand = new ArrayList<Card>();
+        numberOfBooks = 0;
+        this.name = name;
+        this.book = new HashMap<String, Integer>();
+    }
+    
+    public HashMap<String,Integer> getBooks() {
+    	return this.book;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -34,10 +57,24 @@ public class GoFishPlayer {
      */
     public void addCard(Card card) {
         hand.add(card);
+        if (book.containsKey(card.getRank())) {
+            book.put(card.getRank(), book.get(card.getRank()) + 1);
+            if (book.get(card.getRank()) == 4) {
+                numberOfBooks++;
+                removeCards(card.getRank());
+            }
+        } else {
+            book.put(card.getRank(), 1);
+        } 
     }
-    
+
+    public int getNumberOfBooks() {
+        return numberOfBooks;
+    }
+
     /**
      * removes all cards with a given rank and returns them
+     *
      * @return an ArrayList of all cards from a players hand with a given rank
      */
     public ArrayList<Card> removeCards(String rank) {
@@ -50,10 +87,10 @@ public class GoFishPlayer {
         }
         return cards;
     }
-    
+
     /**
-     * @return if a person has a certain card rank or not
      * @param card the card to check for
+     * @return if a person has a certain card rank or not
      */
     public boolean hasCard(String rank) {
         for (Card c : hand) {
@@ -72,5 +109,19 @@ public class GoFishPlayer {
         int index = (int) (Math.random() * hand.size());
         return hand.remove(index);
     }
+
+    public ArrayList<Card> getHand() {
+        return this.hand;
+    }
+
+    public String toStringHand() {
+        String handString = "";
+        for (Card c : hand) {
+            handString += c.getRank() + " " + c.getSuit() + " ";
+        }
+        return handString;
+    }
+
+
 }
 

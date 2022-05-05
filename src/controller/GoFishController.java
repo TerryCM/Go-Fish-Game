@@ -1,15 +1,12 @@
 package controller;
 
+
+import javafx.scene.image.ImageView;
 import model.GoFishModel;
-import util.Card;
 import util.Deck;
 import util.GoFishPlayer;
 
-import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
-
-public class GoFishController implements Observer {
+public class GoFishController {
 
 	private GoFishModel model;
 
@@ -21,31 +18,22 @@ public class GoFishController implements Observer {
 	// consider making the controller a singleton
 	public GoFishController(GoFishModel model) {
 		this.model = model;
-		startGame();
 	}
 
-	private void startGame() {
-		// assuming that number of players is >= 3
-		// drawn cards for each player
-		for (int i = 0; i < getPlayers().length; i++) {
-			for (int j = 0; j < 7; j++) {
-				getPlayers()[i].addCard(getDeck().draw());
-			}
-		}
-	}
-
+	/**
+	 *
+	 * @param rankAsked
+	 * @param playerToAsk
+	 * @return true if the player has the card asked for and false otherwise
+	 */
 	public boolean makeGuess(String rankAsked, int playerToAsk) {
 		if(!model.playerAskForCard(playerToAsk, rankAsked)) {
 				if(!playerGoFish(rankAsked)) {
-					model.changeTurn();
 					return false;
 				}
 			}
 		return true;
 	}
-
-
-
 
 	/**
 	 * method to make the current player "go fish" from the deck.
@@ -56,19 +44,20 @@ public class GoFishController implements Observer {
 	 * player pulls a random card from the deck and brings it to their hand
 	 */
 	public boolean playerGoFish(String rankAsked) {
-		//draw random card from the shuffled deck
-		Card fishedCard = getDeck().draw();
-		//add to players hand
-		getPlayers()[getWhosTurn()].addCard(fishedCard);
-		return fishedCard.getRank().equals(rankAsked);
+		return model.playerGoFish(rankAsked);
 	}
 
+	public void createDecks() {
+		model.startGame();
+	}
 	public GoFishPlayer[] getPlayers() {
 		return model.getPlayers();
 	}
+	
 	public int getWhosTurn() {
 		return model.getWhosTurn();
 	}
+	
 	public Deck getDeck() {
 		return model.getDeck();
 	}
@@ -77,18 +66,65 @@ public class GoFishController implements Observer {
 		return model.isGameOver();
 	}
 
-
-	/**
-	 * This method is called whenever the observed object is changed. An
-	 * application calls an {@code Observable} object's
-	 * {@code notifyObservers} method to have all the object's
-	 * observers notified of the change.
-	 *
-	 * @param o   the observable object.
-	 * @param arg an argument passed to the {@code notifyObservers}
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-
+	public String getOurCurrentHand() {
+		// TODO Auto-generated method stub
+		return model.getOurCurrentHand();
 	}
+	
+	public String getPlayerDeckCount(String i) {
+		return model.getPlayerDeckCount(i);
+	}
+
+	public String getCardsLeft() {
+		// TODO Auto-generated method stub
+		return model.getCardsLeft();
+	}
+
+	public void saveGame() {
+		// TODO Auto-generated method stub
+		model.saveGame();
+	}
+	
+	public ImageView[] getDeckImages() {
+		return model.getDeckImages();
+	}
+
+	public void setTurnOver(boolean b) {
+		// TODO Auto-generated method stub
+		model.setTurnOver(b);
+	}
+	
+	public boolean isTurnOver() {
+		return model.isTurnOver();
+	}
+
+	public int getNumberOfPlayers() {
+		// TODO Auto-generated method stub
+		return model.getNumPlayers();
+	}
+
+	public void changeTurn() {
+		model.changeTurn();
+	}
+
+	public String getPlayerBookCount(String string) {
+		// TODO Auto-generated method stub
+		return model.getPlayerBookCount(string);
+	}
+
+	public String getPlayerName(String string) {
+		// TODO Auto-generated method stub
+		return model.getPlayerName(string);
+	}
+
+	public void loadGame() {
+		// TODO Auto-generated method stub
+		model.loadGame();
+	}
+
+	public String getWinner() {
+		// TODO Auto-generated method stub
+		return model.getWinner();
+	}
+
 }
